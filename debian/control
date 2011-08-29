@@ -5,7 +5,7 @@ Maintainer: Debian XML/SGML Group <debian-xml-sgml-pkgs@lists.alioth.debian.org>
 Uploaders: Nicholas Bamber <nicholas@periapt.co.uk>, Jaldhar H. Vyas <jaldhar@debian.org>
 Build-Depends: debhelper (>= 7.5.0)
 Build-Depends-Indep: sharutils, perl, lynx, libc-bin, yui-compressor
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://validator.w3.org/about.html
 Vcs-Browser: http://svn.debian.org/wsvn/debian-xml-sgml/packages/w3c-markup-validator
 Vcs-Svn: svn://svn.debian.org/svn/debian-xml-sgml/packages/w3c-markup-validator/trunk

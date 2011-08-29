@@ -1,3 +1,12 @@
+w3c-markup-validator (1.2+dfsg-2) UNRELEASED; urgency=low
+
+  * Corrected bug number regarding mod_perl disablement in patch.
+    Thanks to Jorg Sommer for pointing this out.
+  * Patched out versioned dependency on HTML::Template (Closes: 639711)
+  * Raised standards version to 3.9.2
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Thu, 31 Mar 2011 14:35:07 +0100
+
 w3c-markup-validator (1.2+dfsg-1) unstable; urgency=low
 
   * New upstream release

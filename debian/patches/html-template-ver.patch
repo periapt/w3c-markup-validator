@@ -1,0 +1,38 @@
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Bug: http://rt.cpan.org/Ticket/Display.html?id=70190
+Bug-Debian: http://bugs.debian.org/639711
+Subject: HTML::Template has bad version semantics
+Last-Update: 2011-09-29
+--- a/httpd/cgi-bin/check
++++ b/httpd/cgi-bin/check
+@@ -53,7 +53,7 @@
+ use HTML::Encoding 0.52 qw();
+ use HTML::HeadParser 3.60 qw();    # Needed for HTML5 meta charset workaround
+ use HTML::Parser 3.24 qw();        # Need 3.24 for $p->parse($code_ref)
+-use HTML::Template 2.6 qw();       # Need 2.6 for path param, other things.
++use HTML::Template qw();           # Need 2.6 for path param, other things.
+ use HTTP::Headers::Util qw();
+ use HTTP::Message 1.52 qw();       # Need 1.52 for decoded_content()
+ use HTTP::Request qw();
+--- a/httpd/cgi-bin/sendfeedback.pl
++++ b/httpd/cgi-bin/sendfeedback.pl
+@@ -10,7 +10,7 @@
+ 
+ use CGI qw();
+ use File::Spec::Functions qw(catfile);
+-use HTML::Template 2.6 qw();
++use HTML::Template qw();
+ use Config::General 2.32 qw();    # Need 2.32 for <msg 0>, rt.cpan.org#17852
+ 
+ use vars qw($DEBUG $CFG %RSRC $VERSION);
+--- a/misc/docs_errors.pl
++++ b/misc/docs_errors.pl
+@@ -10,7 +10,7 @@
+ ## Modules.  See also the BEGIN block further down below.
+ 
+ use File::Spec::Functions qw(catfile);
+-use HTML::Template 2.6 qw();
++use HTML::Template qw();
+ use Config::General 2.32 qw();    # Need 2.32 for <msg 0>, rt.cpan.org#17852
+ 
+ use vars qw($DEBUG $CFG $VERSION);
