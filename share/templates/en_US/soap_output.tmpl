@@ -1,0 +1,58 @@
+Content-Type: application/soap+xml; charset=UTF-8
+X-W3C-Validator-Recursion: <TMPL_VAR NAME="depth" DEFAULT="1"><TMPL_IF NAME="fatal_error">
+X-W3C-Validator-Status: Abort<TMPL_ELSE><TMPL_IF NAME="valid_status">
+X-W3C-Validator-Status: <TMPL_VAR NAME="valid_status"></TMPL_IF>
+X-W3C-Validator-Errors: <TMPL_VAR NAME="valid_errors_num">
+X-W3C-Validator-Warnings: <TMPL_VAR NAME="valid_warnings_num"></TMPL_IF>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
+<env:Body>
+<m:markupvalidationresponse env:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:m="http://www.w3.org/2005/10/markup-validator">
+    <TMPL_LOOP NAME="debug"><m:debug name="<TMPL_VAR NAME="name" ESCAPE="HTML">"><TMPL_VAR NAME="value" ESCAPE="HTML" DEFAULT="(undefined)"></m:debug>
+    </TMPL_LOOP>
+    <m:uri><TMPL_VAR NAME="file_uri" ESCAPE="HTML"></m:uri>
+    <m:checkedby><TMPL_VAR NAME="env_home_page" ESCAPE="HTML"></m:checkedby>
+    <m:doctype><TMPL_VAR NAME="file_doctype" ESCAPE="HTML"></m:doctype>
+    <m:charset><TMPL_VAR NAME="file_charset" ESCAPE="HTML"></m:charset>
+    <m:validity><TMPL_IF NAME="VALID">true<TMPL_ELSE>false</TMPL_IF></m:validity>
+    <m:errors>
+        <m:errorcount><TMPL_VAR NAME="valid_errors_num"></m:errorcount>
+        <m:errorlist>
+          <TMPL_LOOP NAME="file_errors"><TMPL_IF NAME="err_type_err">
+            <m:error>
+                <m:line><TMPL_VAR NAME="line"></m:line>
+                <m:col><TMPL_VAR NAME="char" ESCAPE="HTML"></m:col>
+                <m:message><TMPL_VAR NAME="msg" ESCAPE="HTML"></m:message>
+                <m:messageid><TMPL_VAR NAME="num" ESCAPE="HTML"></m:messageid>
+                <m:explanation>  <![CDATA[
+                  <TMPL_VAR NAME="expl">
+                  ]]>
+                </m:explanation>
+                <m:source><![CDATA[<TMPL_VAR NAME="src">]]></m:source>
+            </m:error>
+           </TMPL_IF></TMPL_LOOP>
+        </m:errorlist>
+    </m:errors>
+    <m:warnings>
+        <m:warningcount><TMPL_VAR NAME="valid_warnings_num"></m:warningcount>
+        <m:warninglist>
+        <TMPL_IF NAME="have_warnings"><TMPL_INCLUDE NAME="soap_warnings.tmpl"></TMPL_IF>
+        <TMPL_LOOP NAME="file_errors"><TMPL_IF NAME="err_type_warn">
+            <m:warning>
+                <m:line><TMPL_VAR NAME="line"></m:line>
+                <m:col><TMPL_VAR NAME="char" ESCAPE="HTML"></m:col>
+                <m:message><TMPL_VAR NAME="msg" ESCAPE="HTML"></m:message>
+                  <m:messageid><TMPL_VAR NAME="num" ESCAPE="HTML"></m:messageid>
+                  <m:explanation>  <![CDATA[
+                    <TMPL_VAR NAME="expl">
+                    ]]>
+                  </m:explanation>
+                  <m:source><![CDATA[<TMPL_VAR NAME="src">]]></m:source>
+            </m:warning>
+          </TMPL_IF></TMPL_LOOP>
+        </m:warninglist>
+    </m:warnings>
+</m:markupvalidationresponse>
+</env:Body>
+</env:Envelope>

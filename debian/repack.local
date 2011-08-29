@@ -1,0 +1,12 @@
+rm -rf htdocs/images/valid_icons/
+rm -f htdocs/navbar.css.gz
+rm -f htdocs/base.css.gz
+rm -f htdocs/tips.css.gz
+rm -f htdocs/print.css.gz
+rm -f htdocs/scripts/combined.js.gz
+rm -f htdocs/scripts/combined.js
+rm -f htdocs/docs.css.gz
+rm -f htdocs/handheld.css.gz
+rm -f htdocs/results.css.gz
+rm -f htdocs/style/base.css.gz
+rm -f htdocs/style/results.css.gz

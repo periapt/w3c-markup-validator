@@ -1,0 +1,339 @@
+w3c-markup-validator (1.2+dfsg-1) unstable; urgency=low
+
+  * New upstream release
+  * Reviewed and refreshed patches
+  * Simplified rules and compressed files as required by upstream
+    to support content negotiation (Closes: #618469)
+  * Moved test files to the examples directory
+  * Reviewed dependencies
+  * Disabled mod_perl support (cf. #618416)
+  * Refreshed copyright
+  * Refreshed lintian overrides
+  * Add apache config ensuring directory access (Closes: #608225)
+  * Change rules to rebuild htdocs/scripts/combined.js
+  * Added Suggests clause and reviewed the long description
+  * Added example perl script that uses WebService::Validator::HTML::W3C
+  * Removed non-DFSG files (and files that will be rebuilt anyway)
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Thu, 17 Mar 2011 19:02:11 +0000
+
+w3c-markup-validator (1.1-2) unstable; urgency=low
+
+  * Releasing to unstable 
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Tue, 25 Jan 2011 22:42:59 +0000
+
+w3c-markup-validator (1.1-1) experimental; urgency=low
+
+  * New maintainer rebuilt package from first principles (Closes: #573497)
+  * Upgraded to upstream version 1.1 (Closes: #461021 and  Closes: #437795)
+  * Restricting dependency to apache2 until someone volunteers to do
+    integration for other web servers.
+  * Changed dependency from w3c-dtd-xhtml and sgml-data to w3c-sgml-lib.
+  * Basing apache config fragment on upstream supplied fragment. As a
+    consequence of this the home page is http://localhost/w3c-validator/.
+    (Closes: #456904).
+  * Setting version dependency on libwww-perl after investigating taint issues
+  * Replacing W3C placeholder logo with customized Debian logo.
+  * Restricting support to http. This is a holding operation for #445265.
+  * Reviewed and rewrote README.Debian (Closes: #549025).
+  * Adding lintian override over inclusion of mootools convenience library.
+  * Simplified install scripts as much as possible, though
+    leaving some abstraction in case there is a need to add support for more
+    webservers.
+  * Removed dependency on wwwconfig-common.
+  * Automatically enable mod_include and mod_rewrite before bouncing the
+    server (Closes: #477792).
+  * The simplified install scripts mean that translation is no longer
+    required. In fact the translated text referred to old versions of Apache
+    that are no longer part of Debian. (Closes: #551185).
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Sat, 21 Aug 2010 18:22:35 +0100
+
+w3c-markup-validator (0.7.4-5.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add watch file. Closes: #435685
+  * Fix pending l10n bugs. Debconf translations:
+    - Finnish. Closes: #484548
+    - Swedish. Closes: #499341
+
+ -- Christian Perrier <bubulle@debian.org>  Tue, 23 Sep 2008 20:17:15 +0200
+
+w3c-markup-validator (0.7.4-5.1) unstable; urgency=low
+
+  * Non-maintainer upload to fix pending l10n issues.
+  * Debconf translations:
+    - German. Closes: #425433
+    - Galician. Closes: #483201
+    - Basque. Closes: #483482
+    - Russian. Closes: #484315
+  * [Lintian] Convert debian/copyright to UTF-8
+  * [Lintian] Remove usr/share/w3c-markup-validator/config/ empty
+    directory
+  * [Lintian] No longer add an empty /usr/bin directory
+  * Turkish. Closes: #484690
+
+ -- Christian Perrier <bubulle@debian.org>  Fri, 16 May 2008 23:16:57 +0200
+
+w3c-markup-validator (0.7.4-5) unstable; urgency=low
+
+  * Remove dependency on w3c-linkchecker now that Etch is released
+  * debian/po:
+    + updated German po-debconf translation, courtesy of
+      Helge Kreutzmann (closes: Bug#411327)
+  * Upload sponsored thanks to Jaldhar H. Vyas.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Tue, 15 May 2007 01:53:22 +0200
+
+w3c-markup-validator (0.7.4-4) unstable; urgency=low
+
+  * debian/po:
+    + updated Czech po-debconf translation, courtesy of
+      Jan Outrata (closes: Bug#408727)
+  * Upload sponsored thanks to Jaldhar H. Vyas.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 12 Feb 2007 19:23:24 +0100
+
+w3c-markup-validator (0.7.4-3) unstable; urgency=low
+
+  * debian/po:
+    + updated Dutch po-debconf translation, courtesy of
+      Bart Cornelis (closes: Bug#407443)
+  * Upload sponsored thanks to Jaldhar H. Vyas.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 22 Jan 2007 22:31:46 +0100
+
+w3c-markup-validator (0.7.4-2) unstable; urgency=low
+
+  * debian/po:
+    + updated Danish po-debconf translation, courtesy of
+      Morten Bo Johansen (Closes: Bug#401618)
+  * Upload sponsored thanks to Jaldhar H. Vyas.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon,  4 Dec 2006 23:41:20 +0100
+
+w3c-markup-validator (0.7.4-1) unstable; urgency=medium
+
+  * New upstream release, a "maintenance release including bug fixes and
+    documentation updates" (see whatsnew.html)
+  * Requires version >= 0.0.48 of package wwwconfig-common for checking
+    errors when restarting the web server (see bug #399115)
+  * Check if the script restart.sh from wwwconfig-common returns an
+    error when called from postinst or prerm (Closes: Bug# 398638).
+  * Urgency medium because this is related to an RC bug (partly solved
+    and downgraded to important)
+  * Upload sponsored thanks to Anibal Monsalve Salazar
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Sun, 19 Nov 2006 01:36:59 +0100
+
+w3c-markup-validator (0.7.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Remove "Suggests: libterm-readkey-perl (>= 2.00)", which applies 
+    only to the linkchecker.
+  * debian/po:
+    + Update of the Japanese po-debconf template, thanks to
+      Hideki Yamane (Closes: Bug#393210)
+  * Upload sponsored thanks to Jaldhar H. Vyas.	
+	
+ -- Frederic Schutz <schutz@mathgen.ch>  Sun, 29 Oct 2006 22:17:52 +0100
+
+w3c-markup-validator (0.7.2-3) unstable; urgency=low
+
+  * Remove all files from the w3c-linkchecker, since it is now in its
+    own package.
+  * Depends on the new w3c-linkchecker package until Debian Etch is
+    released, to ensure a smooth transition.
+  * debian/po:
+    + Update of the French po-debconf template, thanks to Thomas Huriaux
+      (Closes: Bug#369296)
+    + Update of the Portuguese po-debconf translation, courtesy of Rui
+      Branco (Closes: Bug#381200)
+  * Update README.Debian and README.config so that they match the recent
+    changes in this package (version 0.7.2-1 and beyond).
+  * Upload sponsored thanks to Jaldhar H. Vyas.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Sun, 13 Aug 2006 02:08:07 +0200
+
+w3c-markup-validator (0.7.2-2) unstable; urgency=low
+
+  * Moved debhelper from Build-Depends-Indep to Build-Depends (needed
+    for the 'clean' target); thanks to Steve Langasek and the newer
+    version of Lintian.
+  * Small updates to the debconf template following a Lintian warning
+    + French po-debconf translation updated.
+    + Italian po-debconf translation updated, thanks to Luca Monducci
+      (Closes: Bug#367225)
+  * Update latin1 characters in the checklink manpage, following a
+    Lintian warning, and some helpful comments by Steve Langasek.
+  * Update to standards 3.7.2.0 (nothing to change)
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 15 May 2006 22:47:14 +0200
+
+w3c-markup-validator (0.7.2-1) unstable; urgency=low
+
+  * New upstream release (Closes: Bug#324028 )
+    + Works with newer version of libconfig-general-perl
+      (Closes: Bug#358901)
+  * Update dependencies: libconfig-general-perl (>= 2.19),
+    libhtml-template-perl (>= 2.6).
+  * Added automatic configuration for Apache and Apache-Perl;
+    several servers can now be configured at the same time
+  * debian/templates: add Apache2 and Apache-Perl as options
+  * Add lintian overrides; see the override file for complete
+    rationale.
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Sun,  7 May 2006 22:53:38 +0200
+
+w3c-markup-validator (0.6.7-4) unstable; urgency=low
+
+  * Depends on debconf | debconf-2.0 (by way of ${misc:Depends})
+    (Closes: Bug#332140)
+  * debian/po:
+    + added Vietnamese po-debconf translation, courtesy of Clytie Siddall
+      (Closes: Bug#324078)
+    + added Swedish po-debconf translation, courtesy of Daniel Nylander
+      (Closes: Bug#330946)
+    + added Portuguese po-debconf translation, courtesy of Rui Branco
+      (Closes: Bug#335954)
+  * Updated to standards 3.6.2 (nothing to change)
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Thu, 27 Oct 2005 23:19:21 +0200
+
+w3c-markup-validator (0.6.7-3) unstable; urgency=low
+
+  * README.Debian: Added note from Adam Sjøgren <asjo@koldfront.dk>
+    (see bug 286091) about the use of check to validate pages that
+    require http-authorization. I am not sure that it is a good idea
+    to turn mod_rewrite on by default on every installation, so I
+    have not applied the patch yet, and have left the bug open for
+    now.
+  * debian/po:
+    + added Czech po-debconf translation, courtesy of Jan Outrata
+      (Closes: Bug#276668)
+    + added Danish po-debconf translation, courtesy of Morten Bo Johansen
+      (Closes: Bug#286091)
+	
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 11 Apr 2005 22:53:09 +1000
+
+w3c-markup-validator (0.6.7-2) unstable; urgency=low
+
+  * Added documentation in README.Debian about validation of pages on
+    private IP addresses (Closes: Bug#268089)
+  * Corrected a few broken image links in footer.html and check
+	
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 30 Aug 2004 16:36:18 +1000
+
+w3c-markup-validator (0.6.7-1) unstable; urgency=low
+
+  * New upstream release
+  * Updated internal SGML catalogs to use the new location of XML DTDs in
+    Debian. Requires w3c-dtd-xhtml >= 1.1-5.
+  * Updated linkchecker to version 4.0; in the future, it will be
+    provided as a separate package (w3c-linkchecker)
+  * Apache configuration now uses the conf.d directory (Closes: Bug#227855)
+    Requires apache (>= 1.3.29.0.1-1).
+  * debian/po:
+    + added Italian po-debconf translation, courtesy of Luca Monducci
+      (Closes: Bug#251741)
+    + added Catalan po-debconf translation, courtesy of Aleix Badia i Bosch
+      (Closes: Bug#254867)
+	
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon,  9 Aug 2004 21:18:12 +1000
+
+w3c-markup-validator (0.6.1-4) unstable; urgency=low
+
+  * debian/control:
+    + added dependencies on libnet-ip-perl and libconfig-general-perl, now
+      required by checklink.pl
+    + added suggestion on libterm-readkey-perl, which can be used to enter
+      a password for checklink.pl
+  * httpd/cgi-bin/checklink.pl: updated to latest CVS version
+    + Unbreak --masquerade in checklink.pl (Closes: Bug#187791)
+  * check: backport fixes from CVS
+    + Untaint variables read from the configuration file (we must trust them
+      anyway) so that Perl (>= 5.8.1) does not yield an error when calling
+      the Open3 function. (Closes: Bug#217353)
+  * debian/po:
+    + added German po-debconf translation, translated by Pattrick
+      William, Tomas and Friedemann from the german Skolelinux team, courtesy
+      of <cobaco@linux.be>. (Closes: Bug#223121)
+    + added Japanese po-debconf translation, courtesy of Hideki Yamane
+      (Closes: Bug#224184)
+  * Uploaded for Frederic by Jaldhar H. Vyas <jaldhar@debian.org>
+
+ -- Jaldhar H. Vyas <jaldhar@debian.org>  Wed, 31 Dec 2003 20:27:25 -0500
+	
+w3c-markup-validator (0.6.1-3) unstable; urgency=low
+
+  * debian/checkink.1: removed, since the man page has been converted
+    to POD format and submitted upstream for inclusion in checklink.pl
+  * debian/dirs: removed etc/apache
+  * debian/control
+    + Now depends on Perl (>= 5.8) for correct handling of UNICODE characters
+    + Perl 5.8 provides libtime-hires-perl and libcgi-pm-perl in sufficient
+      version, so we don't need to depend on them anymore.
+    + Build-depends-indep: debhelper (>= 4.1.16), and removed po-debconf,
+      as suggested by the po-debconf man page
+    + Updated to standards 3.6.1 (nothing to change)
+    + The W3C produces "recommendations", not standards -- changed the
+      description accordingly
+  * debian/po: added dutch po-debconf translation, courtesy of
+    <cobaco@linux.be>. (Closes: Bug#204927)
+  * debian/README.config: added configuration snippet for Apache2
+  * debian/rules
+    + Added target debian/po/templates.pot in rules files to make sure
+      that the PO files are always up to date when the debconf template
+      is changed, as suggested by the po-debconf man page
+    + Generate the manpage while building using POD in checklink.pl
+  * htdocs/*: backported small changes from CVS
+  * httpd/cgi-bin/checklink.pl (backported from CVS)
+    + Added POD documentation
+    + Stop if unknown option on the command line (Closes: Bug#187792)
+    + Added option "-?" for help, and clarified help about the
+      --location option (Closes: Bug#189642)
+    + Fix redirect loop detection (Closes: Bug#188372)
+	
+ -- Frederic Schutz <schutz@mathgen.ch>  Sun,  7 Sep 2003 01:36:01 +1000
+
+w3c-markup-validator (0.6.1-2) unstable; urgency=low
+
+  * Depends: apache|httpd instead of apache|apache-ssl.
+    If you use another webserver, you'll have to configure it manually,
+    see the new README.config documentation file. Closes: Bug#177965
+  * Depends: w3c-dtd-xhtml to allow validation of XHTML (1.0, 1.1 and
+    basic) documents. DTDs were previously provided by the sgml-data
+    package. Closes: Bug#178529
+  * Added TODO file.
+  * Converted the package to po-debconf for the translation of debconf
+    templates, requires debhelper (>= 4.1.13), po-debconf for build.
+  * Debhelper changes:
+      - uses dh_installman instead of the (deprecated) dh_installmanpages
+      - uses debian/compat file instead of DH_COMPAT 
+  * Updated to standards 3.5.9.0 (nothing to change)
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Tue, 18 Mar 2003 11:56:21 +1100
+
+w3c-markup-validator (0.6.1-1) unstable; urgency=low
+
+  * New upstream release
+  * First official release for Debian, closes: Bug#166025
+  * Converted the installation scripts to debconf and wwwconfig-common 
+  * Added support for the MathML DTD present in Debian (the package now 
+    Recommends: w3-dtd-mathml) 
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon, 16 Dec 2002 22:06:03 +1100
+
+w3c-markup-validator (0.6.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Added a manpage for checklink(1)
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Tue, 26 Nov 2002 22:54:11 +1100
+
+w3c-markup-validator (0.0.20021103-1) unstable; urgency=low
+
+  * Initial Release, from the upstream CVS
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Mon,  4 Nov 2002 22:14:00 +1100

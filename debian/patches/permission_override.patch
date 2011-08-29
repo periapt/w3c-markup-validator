@@ -1,0 +1,20 @@
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Subject: Permission override in case access is denied generally
+Last-Update: 2011-03-17
+Bug: http://lists.w3.org/Archives/Public/www-validator/2011Mar/0035.html
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=608225
+--- a/httpd/conf/httpd.conf
++++ b/httpd/conf/httpd.conf
+@@ -61,6 +61,12 @@
+   ExpiresByType application/javascript A2592000
+   ExpiresByType application/ecmascript A2592000
+   </IfModule>
++
++  # See bug 608225
++  # Permission may be denied higher up so override here.
++  Order allow,deny
++  allow from all
++
+ </Directory>
+ 
+ # Atom news feed

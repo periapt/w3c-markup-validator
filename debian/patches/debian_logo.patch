@@ -1,0 +1,37 @@
+Subject: Replace empty logo image with a Debianized one
+Author: Nicholas Bamber
+Forwarded: not-needed
+Last-Update: 2011-03-15
+--- a/htdocs/no_referer.asis
++++ b/htdocs/no_referer.asis
+@@ -22,7 +22,7 @@
+     
+     <div id="banner">
+      <h1 id="title">
+-       <a href="http://www.w3.org/"><img alt="W3C" width="110" height="61" id="logo" src="./images/no_w3c.png" /></a>
++       <a href="http://www.debian.org/"><img alt="W3C on Debian" width="110" height="61" id="logo" src="./images/logo.png" /></a>
+  			<a href="./"><span>Markup Validation Service</span></a>
+ 
+        </h1>
+--- a/share/templates/en_US/header.tmpl
++++ b/share/templates/en_US/header.tmpl
+@@ -29,7 +29,7 @@
+     
+     <div id="banner">
+      <h1 id="title">
+-       <a href="http://www.w3.org/"><img alt="W3C" width="110" height="61" id="logo" src="./images/w3c.png" /></a>
++       <a href="http://www.debian.org/"><img alt="W3C on Debian" width="110" height="61" id="logo" src="./images/logo.png" /></a>
+  			<a href="./"><span>Markup Validation Service</span></a>
+        </h1>
+        <p id="tagline">Check the markup (HTML, XHTML, …) of Web documents</p>
+--- a/htdocs/header.html
++++ b/htdocs/header.html
+@@ -31,7 +31,7 @@
+   <body>
+    <div id="banner">
+     <h1 id="title">
+-      <a href="http://www.w3.org/"><img alt="W3C" width="110" height="61" id="logo" src="<!--#echo var="relroot" -->images/w3c.png" /></a>
++       <a href="http://www.debian.org/"><img alt="W3C on Debian" width="110" height="61" id="logo" src="<!--#echo var="relroot" -->images/logo.png" /></a>
+ 			<a href="<!--#echo var="relroot" -->"><span>Markup Validation Service</span></a>
+       </h1>
+       <p id="tagline">Check the markup (HTML, XHTML, …) of Web documents</p>

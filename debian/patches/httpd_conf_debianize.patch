@@ -1,0 +1,43 @@
+Subject: Cutomization for httpd.conf fragment
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Forwarded: not-needed
+Last-Update: 2010-08-18
+--- a/httpd/conf/httpd.conf
++++ b/httpd/conf/httpd.conf
+@@ -1,20 +1,18 @@
+ #                                                                -*- apache -*-
+-# Example httpd.conf snippet for W3C Markup Validation Service
++# Debianized httpd.conf snippet for W3C Markup Validation Service
+ # Note that this is not a complete server configuration file, but contains
+ # only the validator-specific part.
+ #
+-# You can use the Include directive for including this in your main httpd.conf.
+-#
+-# The values below assume that you have the validator files in
+-# /usr/local/validator.  If not, tune them according to your setup.
++# The w3c-markup-validator postinst script will link
++# /etc/apache2/conf.d/w3c-markup-validator.conf -> /etc/w3c/httpd.conf
+ #
+ # To run the validator without mod_perl 2.x even if it is loaded, comment
+ # out the "IfDefine MODPERL2" sections below.
+ 
+ # First, tell httpd that check and sendfeedback.pl are CGI scripts.
+ 
+-AliasMatch ^/+w3c-validator/+check(/+referer)?$   /usr/local/validator/cgi-bin/check
+-AliasMatch ^/+w3c-validator/+feedback(\.html)?$ /usr/local/validator/cgi-bin/sendfeedback.pl
++AliasMatch ^/+w3c-validator/+check(/+referer)?$   /usr/lib/cgi-bin/w3c-markup-validator/check
++AliasMatch ^/+w3c-validator/+feedback(\.html)?$ /usr/lib/cgi-bin/w3c-markup-validator/sendfeedback.pl
+ 
+ <IfDefine MODPERL2>
+ # Note: this affects the whole server, not just the validator.
+@@ -40,8 +38,8 @@
+ 
+ # This is the directory where you have the validator's *.html, *.css etc files.
+ 
+-Alias /w3c-validator/   /usr/local/validator/htdocs/
+-<Directory /usr/local/validator/htdocs/>
++Alias /w3c-validator/   /usr/share/w3c-markup-validator/html/
++<Directory /usr/share/w3c-markup-validator/html/>
+   Options               IncludesNOEXEC Indexes MultiViews
+   AllowOverride         None
+   AddHandler            server-parsed .html

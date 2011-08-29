@@ -1,0 +1,48 @@
+<!--#set var="title" value="Error Explanations for The W3C Markup Validation Service"
+--><!--#set var="relroot" value="../"
+--><!--#include virtual="../header.html" -->
+<div class="doc">
+<h2 id="skip">Explanation of the error messages<br /> for the W3C Markup Validator</h2>
+
+<h3 id="TableOfContents">Table of Contents</h3>
+  <div id="toc">
+    <ul>
+	<li><a href="#hasverbose">Error messages with explanation</a></li>
+	<li><a href="#noverbose">Error messages without explanation</a></li>
+    </ul>
+  </div>
+
+  <div>
+    <h3 id="hasverbose">List of Validator errors and their explanation</h3>
+    <p>Below are all the validator's error messages for which we have an "explanation".</p>
+
+      <dl>
+      <TMPL_LOOP NAME="list_errors_hasverbose">
+        <dt id="ve-<TMPL_VAR NAME="id">"><TMPL_VAR NAME="id">: <TMPL_VAR NAME="original"></dt>
+        <dd><TMPL_VAR NAME="verbose">
+	<p>
+	  <a href="<!--#echo var="relroot" -->feedback.html?errmsg_id=<TMPL_VAR NAME="id">#errormsg"
+	  title="Suggest improvements on this error message through our feedback channels">&#x2709;</a>
+	</p>
+	</dd>  
+      </TMPL_LOOP>
+      </dl>
+
+    <h3 id="noverbose">Errors without explanation</h3>
+    <p>The following validation errors do not have an explanation yet. We invite you to use the 
+    <a href="<!--#echo var="relroot" -->feedback.html#errormsg">feedback channels</a> to send your suggestions.</p>
+    <ul>
+	<TMPL_LOOP NAME="list_errors_noverbose">
+        <li id="ve-<TMPL_VAR NAME="id">"><p><TMPL_VAR NAME="id">: <TMPL_VAR NAME="original">
+	  <a href="<!--#echo var="relroot" -->feedback.html?errmsg_id=<TMPL_VAR NAME="id">#errormsg"
+	  title="Suggest improvements on this error message through our feedback channels">&#x2709;</a>
+	</p>
+	</li>
+      </TMPL_LOOP>
+    </ul>
+  </div>
+</div><!-- doc -->
+<!--#include virtual="../footer.html" -->
+  </body>
+</html>
+

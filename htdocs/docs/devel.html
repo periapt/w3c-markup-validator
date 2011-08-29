@@ -1,0 +1,92 @@
+<!--#set var="title" value="Developer Documentation for The W3C Markup Validation Service"
+--><!--#set var="relroot" value="../"
+--><!--#include virtual="../header.html" -->
+
+<div class="doc">
+<h2>Installation and development information <br />for the W3C Markup Validator</h2>
+
+<h3 id="TableOfContents">Table of Contents</h3>
+
+    <div id="toc">
+      <ul>
+	<li><a href="#participate">Participate</a></li>
+        <li><a href="#devel-frame">Development Framework</a>
+	  <ul>
+		<li><a href="#bug">Bugs and Issue Tracking</a></li>
+		<li><a href="#test">Test suite</a></li>
+        	<li><a href="#todo">TODO</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </div>
+    
+    <p>
+    <a id="skip" name="skip"></a>
+      This document is an overview of how developers can modify the Markup Validator, and how to contribute
+      to the development of the project. It is intended for system administrators and developers.
+      <strong>This is not end user documentation</strong>. See the <a href="users.html">User Manual</a> for usage instructions.
+    </p>
+	
+     <h3><a id="participate" name="participate"></a>Participating in the development of the Markup Validator</h3>
+     <p>The Markup Validator is managed as an open source project by a <a href="http://www.w3.org/QA/Tools/qa-dev/">team 
+     of volunteer developers and people from the W3C Team</a>.</p>
+     <p> Help on this project is always welcome, usually as <a href="../feedback.html">feedback</a>,
+     but developers may also be interested in working directly on the code, which is certainly encouraged.</p>
+
+     <p>This document tries to give a general overview of the development framework for the Markup Validator, and
+     should help developers get a good idea of how the project is managed.</p>
+     <p>The next steps would certainly be to read about <a href="../source/">source availability</a> and then try 
+     a <a href="install.html">local installation</a> of the validator, if not done yet. We also (obviously) recommend
+     to get in touch with other developers, either through <a href="../feedback.html">regular means</a>, or on the
+     IRC channel #validator on irc.freenode.net where many developers and contributors often are.</p>
+
+     <h3><a name="devel-frame" id="devel-frame"></a>Development Framework</h3>
+
+	<h4><a id="bug" name="bug"></a>Bug and Issue Tracking System</h4>
+      <p>
+        Bug and Issue Tracking for the Validator happens in the <a
+          href="http://www.w3.org/Bugs/Public/">W3C Public Bugzilla</a>
+        instance. Developers should feel free to set up an account
+        and report bugs, enhancement requests, patches, etc. directly there
+        (end users should continue to send reports and ideas to the 
+	<a href="http://lists.w3.org/Archives/Public/www-validator/">mailing list</a>).
+      </p>
+      <h4><a id="test" name="test"></a>Test suite</h4>
+
+       <p>
+         Any changes to the service will attempt to maintain
+         compatibility with a <a href="../dev/tests/">list of test cases</a>.
+       </p>
+
+       <p>The validator has an <a href="http://dvcs.w3.org/hg/markup-validator/file/tip/misc/testsuite/">automated test suite</a> which is used 
+           frequently to check that no change has broken any feature or resurfaced a bug. Whenever possible, join a <em>test case</em>
+           with your patches.</p>
+           
+       <p><em>example</em>: for a patch for the detection of document encoding in the &lt;head&gt;, join as a test case a simple 
+           HTML document with encoding information in the &lt;head&gt;, and another document without.</p>
+
+
+      <h4><a id="todo" name="todo"></a>TODO</h4>
+      <p>
+        The TODO list for the Validator is online at
+        &lt;<a href="../todo.html">http://validator.w3.org/todo.html</a>&gt;.
+ 	      This is probably the best place to start.
+ 	    </p>
+      <p>
+        However this list is by no means comprehensive. Feel free to suggest
+        other features that should be on this list or send patches for your
+        favourite feature.
+      </p>
+      <p>
+        Keep in mind that features should be of general utility and that the
+        point if the validator is that it does an <em>objective</em>
+        validation instead of just what some random developer happens to
+        think is a Good Idea&reg;. While extra features are nice, they
+        shouldn't dilute the value of the validator as an objective check.
+      </p>
+
+
+</div>
+<!--#include virtual="../footer.html" -->
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<TMPL_IF NAME="VALID">
+  <TMPL_IF NAME="is_tentative">
+    <h2 class="tentative_valid">This document was <em>Tentatively</em> checked as  
+    <TMPL_VAR NAME="file_version" ESCAPE="HTML"></h2>
+  <TMPL_ELSE>
+    <h2 class="valid">This document was successfully checked as <TMPL_IF NAME="xmlwf_only">well-formed</TMPL_IF>
+     <TMPL_VAR NAME="file_version" ESCAPE="HTML">!</h2>
+  </TMPL_IF>
+<TMPL_ELSE>
+  <TMPL_IF NAME="fatal_error">
+  <h2 id="results" class="invalid">Sorry! This document can not be checked.</h2>
+  <TMPL_ELSE>  
+  <h2 id="results" class="invalid">Error<TMPL_IF NAME="number_of_errors_is_plural">s</TMPL_IF> found while checking this document as <TMPL_VAR NAME="file_version" ESCAPE="HTML">!</h2>
+  </TMPL_IF>  
+</TMPL_IF>  
+
+
+<TMPL_IF NAME="file_uri">
+<TMPL_IF NAME="is_upload">  
+<form id="form" method="post" enctype="multipart/form-data" action="check">
+<TMPL_ELSE>
+  <TMPL_IF NAME="is_direct_input">
+    <form id="form" method="post" enctype="multipart/form-data" action="check">
+  <TMPL_ELSE>
+    <form id="form" method="get" action="check">
+  </TMPL_IF>
+</TMPL_IF>
+  <table class="header">
+    <tr>
+    <th>Result:</th>
+    <TMPL_IF NAME="VALID">
+    <td colspan="2" class="valid">
+      <TMPL_IF NAME="is_tentative">
+        Tentatively passed<TMPL_IF Name="valid_warnings_num">, <strong class="has_warnings"><TMPL_VAR NAME="valid_warnings_num"> warning(s)</strong></TMPL_IF>
+      <TMPL_ELSE>
+        Passed<TMPL_IF Name="valid_warnings_num">, <strong class="has_warnings"><TMPL_VAR NAME="valid_warnings_num"> warning(s)</strong></TMPL_IF>
+      </TMPL_IF>
+    <TMPL_ELSE>
+    <td colspan="2" class="invalid">
+      <TMPL_IF NAME="number_of_errors_is_1">1 Error</TMPL_IF><TMPL_IF NAME="number_of_errors_is_plural"><TMPL_VAR NAME="valid_errors_num" ESCAPE="HTML"> Errors</TMPL_IF><TMPL_IF NAME="valid_warnings_num">, <TMPL_VAR NAME="valid_warnings_num"> warning(s)</TMPL_IF>
+      <TMPL_IF NAME="number_of_errors_is_0">Invalid<!-- this case where validation fails but no error is listed should never happen --></TMPL_IF>
+    </TMPL_IF>
+    </td>
+    </tr>
+    <tr>
+<TMPL_IF NAME="is_upload">
+  <th><label title="Choose a Local File to Upload and Validate" for="uploaded_file">File</label>:</th>
+  <td colspan="2">
+    
+    <input type="file" id="uploaded_file" name="uploaded_file" size="30" />
+    <p class="revalidate_instructions">Use the file selection box above if you wish to re-validate the uploaded file <TMPL_VAR NAME="file_uri" ESCAPE="HTML"></p>
+  </td>
+  
+<TMPL_ELSE>
+  <TMPL_IF NAME="is_direct_input">
+          <th><label title="Uploaded source of your Document" for="fragment">Source</label>:</th><td colspan="2"><textarea id="fragment" name="fragment" rows="12" cols="80"><TMPL_LOOP NAME="file_source"><TMPL_VAR NAME="file_source_line" ESCAPE="HTML">
+</TMPL_LOOP></textarea></td>
+  <TMPL_ELSE>  
+      <th><label title="Address of Page to Validate" for="uri">Address</label>:</th>
+      <td colspan="2"><input type="text" id="uri" name="uri" value="<TMPL_VAR NAME="file_uri" ESCAPE="HTML">" size="50" /></td>
+  </TMPL_IF>    
+</TMPL_IF>
+    </tr>
+<TMPL_IF NAME="opt_verbose">
+    <tr><th>Modified:</th><td colspan="2"><TMPL_VAR NAME="file_modified" ESCAPE="HTML" DEFAULT="(undefined)"></td></tr>
+    <tr><th>Server:</th><td colspan="2"><TMPL_VAR NAME="file_server" ESCAPE="HTML" DEFAULT="(undefined)"></td></tr>
+    <tr><th>Size:</th><td colspan="2"><TMPL_VAR NAME="file_size" ESCAPE="HTML" DEFAULT="(undefined)"></td></tr>
+    <tr><th>Content-Type:</th><td colspan="2"><TMPL_VAR NAME="file_contenttype" ESCAPE="HTML" DEFAULT="(undefined)"></td></tr>
+</TMPL_IF>
+  <TMPL_LOOP NAME="debug">
+    <tr><th><TMPL_VAR NAME="name" ESCAPE="HTML">:</th><td colspan="2"><TMPL_VAR NAME="value" ESCAPE="HTML" DEFAULT="(undefined)"></td></tr>
+  </TMPL_LOOP>
+<TMPL_IF NAME="file_charset">
+  <tr>
+    <th><label title="Character Encoding" for="charset">Encoding</label>:</th>
+    <td><TMPL_VAR NAME="file_charset" ESCAPE="HTML"></td><td><TMPL_INCLUDE NAME="popup_charset.tmpl"></td>
+  </tr>
+<TMPL_ELSE>
+  <tr><th>Encoding:</th><td colspan="2"><TMPL_INCLUDE NAME="popup_charset.tmpl"></td></tr>
+</TMPL_IF>
+<TMPL_IF NAME="file_version">
+  <tr>
+    <th><label for="doctype" title="Document Type">Doctype</label>:</th>
+    <td><TMPL_VAR NAME="file_version" ESCAPE="HTML"></td><td><TMPL_INCLUDE NAME="popup_doctype.tmpl"></td>
+  </tr>
+<TMPL_ELSE>
+  <tr><th>Doctype:</th><td colspan="2"><TMPL_INCLUDE NAME="popup_doctype.tmpl"></td></tr>
+</TMPL_IF>
+<TMPL_IF NAME="root_element">
+  <tr>
+    <th>Root Element:</th>
+    <td colspan="2"><TMPL_VAR NAME="root_element" ESCAPE="HTML"></td>
+  </tr>
+</TMPL_IF>
+<TMPL_IF NAME="file_namespace">
+    <tr>
+      <th>Root Namespace:</th>
+      <td colspan="2"><a href="<TMPL_VAR NAME="file_namespace" ESCAPE="HTML">"><TMPL_VAR NAME="file_namespace" ESCAPE="HTML"></a></td>
+    </tr>
+</TMPL_IF>
+<TMPL_IF NAME="file_namespaces">
+    <tr>
+      <th>Other Namespaces</th>
+      <td colspan="2">
+        <ul>
+          <TMPL_LOOP NAME="file_namespaces"><li><a href="<TMPL_VAR NAME="uri" ESCAPE="HTML">"><TMPL_VAR NAME="uri" ESCAPE="HTML"></a></li></TMPL_LOOP>
+        </ul>
+      </td>
+    </tr>
+</TMPL_IF>
+  </table>
+
+<div id="don_program"></div>
+<script type="text/javascript" src="http://www.w3.org/QA/Tools/don_prog.js"></script>
+
+        <fieldset id="revalidate_opts">
+                 <legend>Options</legend>
+
+    <table class="header">
+      <tr>
+        <td><input type="checkbox" value="1" id="ss" name="ss" 
+<TMPL_IF NAME="opt_show_source">
+	checked="checked"
+</TMPL_IF>
+		/><label title="Show Page Source" for="ss">Show&nbsp;Source</label></td>
+              <td><input type="checkbox" value="1" id="outline" name="outline" 
+<TMPL_IF NAME="opt_show_outline">
+	checked="checked"
+</TMPL_IF>
+		/><label title="Show an Outline of the document" for="outline">Show&nbsp;Outline</label></td>
+                <td><input type="radio" name="group" id="group_no" value="0" 
+                        <TMPL_UNLESS NAME="opt_group_errors">
+                        	checked="checked"
+                        </TMPL_UNLESS>
+                        /><label for="group_no">List Messages Sequentially</label> 
+                        <input type="radio" name="group" id="group_yes" value="1"
+                                <TMPL_IF NAME="opt_group_errors">
+                                	checked="checked"
+                                </TMPL_IF>
+                                 /><label for="group_yes">Group Error Messages by Type</label></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" value="1" id="No200" name="No200"
+<TMPL_IF NAME="opt_no200">
+	checked="checked"
+</TMPL_IF>
+		/><label title="Validate also pages for which the HTTP status code indicates an error" for="No200">Validate&nbsp;error&nbsp;pages</label></td>
+              <td><input type="checkbox" value="1" id="verbose" name="verbose"
+<TMPL_IF NAME="opt_verbose">
+	checked="checked"
+</TMPL_IF>
+		/><label title="Show Verbose Output" for="verbose">Verbose&nbsp;Output</label></td>
+    		<td><input id="st" name="st" type="checkbox" value="1"
+                        <TMPL_IF NAME="opt_show_tidy">
+                        	checked="checked"
+                        </TMPL_IF>
+    		         /><label for="st">Clean up Markup with HTML-Tidy</label></td>
+            </tr>
+
+    </table>
+        <p class="moreinfo">
+          <a href="docs/users.html#Options">Help</a> on the options is available.
+        </p>
+    <div id="revalidate_button" class="submit_button">
+ <TMPL_IF NAME="accept"><input type="hidden" value="<TMPL_VAR NAME="accept" ESCAPE=HTML>" id="accept" name="accept" /></TMPL_IF><TMPL_IF NAME="accept-language"><input type="hidden" value="<TMPL_VAR NAME="accept-language" ESCAPE=HTML>" id="accept-language" name="accept-language" /></TMPL_IF><TMPL_IF NAME="accept-charset"><input type="hidden" value="<TMPL_VAR NAME="accept-charset" ESCAPE=HTML>" id="accept-charset" name="accept-charset" /></TMPL_IF><TMPL_IF NAME="user-agent"><input type="hidden" value="<TMPL_VAR NAME="user-agent" ESCAPE=HTML>" id="user-agent" name="user-agent" /></TMPL_IF>
+      <input type="submit" value="Revalidate" title="Validate this document again" />
+    </div>
+  </fieldset>
+</form>
+</TMPL_IF>

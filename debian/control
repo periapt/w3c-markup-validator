@@ -1,0 +1,30 @@
+Source: w3c-markup-validator
+Section: web
+Priority: optional
+Maintainer: Debian XML/SGML Group <debian-xml-sgml-pkgs@lists.alioth.debian.org>
+Uploaders: Nicholas Bamber <nicholas@periapt.co.uk>, Jaldhar H. Vyas <jaldhar@debian.org>
+Build-Depends: debhelper (>= 7.5.0)
+Build-Depends-Indep: sharutils, perl, lynx, libc-bin, yui-compressor
+Standards-Version: 3.9.1
+Homepage: http://validator.w3.org/about.html
+Vcs-Browser: http://svn.debian.org/wsvn/debian-xml-sgml/packages/w3c-markup-validator
+Vcs-Svn: svn://svn.debian.org/svn/debian-xml-sgml/packages/w3c-markup-validator/trunk
+
+Package: w3c-markup-validator
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, apache2, libwww-perl (>= 5.836),
+ liburi-perl, libhtml-template-perl, libhtml-parser-perl (>= 3.60),
+ libtext-iconv-perl, libset-intspan-perl, libnet-ip-perl, 
+ libconfig-general-perl, w3c-sgml-lib, libencode-hanextra-perl,
+ libhtml-encoding-perl, libjson-perl, libxml-libxml-perl (>= 1.70),
+ libsgml-parser-opensp-perl
+Recommends: libhtml-tidy-perl
+Suggests: libwebservice-validator-html-w3c-perl, libtest-html-w3c-perl,
+ libxml-path-perl
+Description: W3C Markup Validator
+ The W3C Markup Validator is a CGI script which lets you enter the URL of a web
+ page which will be then checked against a validating SGML parser for
+ conformance to official W3C recommendations. Pages can also be uploaded.
+ .
+ These are the same scripts that are available on the W3C web site, 
+ http://validator.w3.org/.

@@ -1,0 +1,44 @@
+Subject: Customize main config file
+Forwarded: not-needed
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Last-Update: 2011-03-14
+--- a/htdocs/config/validator.conf
++++ b/htdocs/config/validator.conf
+@@ -19,11 +19,11 @@
+   #
+   # Base path.  Defaults to the value of the W3C_VALIDATOR_HOME environment
+   # variable or /usr/local/validator if the variable does not exist.
+-  #Base = /usr/local/validator
++  Base = /usr/share/w3c-markup-validator
+ 
+   #
+   # Location of template files
+-  Templates = $Base/share/templates
++  Templates = $Base/templates
+ 
+   #
+   # Directory where to store cached templates.  Relative paths are
+@@ -34,12 +34,12 @@
+   #Cache = validator
+ 
+   # configuration file for HTML::Tidy Module, if available
+-  TidyConf = $Base/htdocs/config/tidy.conf
++  TidyConf = /etc/w3c/tidy.conf
+ 
+   <SGML>
+     #
+     # The SGML Library Path.
+-    Library = $Base/htdocs/sgml-lib
++    Library = /usr/share/xml/xhtml/schema/dtd
+   </SGML>
+ </Paths>
+ 
+@@ -77,7 +77,7 @@
+ 
+ #
+ # Email address of the maintainer of this service.
+-Maintainer = www-validator@w3.org
++Maintainer = webmaster@localhost
+ 
+ # Localization
+ # only English available for now

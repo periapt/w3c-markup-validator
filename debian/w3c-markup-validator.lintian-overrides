@@ -1,0 +1,9 @@
+# I have tried using the Debian mootools install but it DOES not work.
+# Specifically the site behaves exactly as it would if javascript
+# were turned off. I suspect that these are somewhat modified by the W3C
+# from the original mootools and so this has to stay as it is.
+w3c-markup-validator: embedded-javascript-library usr/share/w3c-markup-validator/html/scripts/mootools-1.2.5.1-more.js
+w3c-markup-validator: embedded-javascript-library usr/share/w3c-markup-validator/html/scripts/mootools-1.2.5-core-nc.js
+# These files are required for content negotiation.
+# See #618469
+w3c-markup-validator: duplicated-compressed-file

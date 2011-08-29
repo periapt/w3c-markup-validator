@@ -1,0 +1,40 @@
+<table>
+  <tr>
+    <th>
+      <label for="<!--#echo var="fieldset_id" -->-charset">Character Encoding</label>
+    </th>
+    <td>
+      <!--#include virtual="charset-select.html" -->
+    </td>
+    <td><input id="<!--#echo var="fieldset_id" -->-fbc" name="fbc" type="checkbox" value="1" /><label for="<!--#echo var="fieldset_id" -->-fbc" title="Use selected Character encoding only if missing in the document">Only if missing</label></td>
+  </tr>
+  <tr>
+    <th>
+        <label for="<!--#echo var="fieldset_id" -->-doctype">Document Type</label>
+    </th>
+    <td>
+        <!--#include virtual="doctype-select.html" -->
+    </td>
+    <td><label for="<!--#echo var="fieldset_id" -->-fbd"><input id="<!--#echo var="fieldset_id" -->-fbd" name="fbd" type="checkbox" value="1" title="Use selected Document Type only if missing in the document" />Only if missing</label></td>
+  </tr>
+  <tr>
+          <td colspan="3"><input type="radio" name="group" id="<!--#echo var="fieldset_id" -->group_no" value="0" checked="checked" /><label for="<!--#echo var="fieldset_id" -->group_no">List Messages Sequentially</label> <input type="radio" name="group" id="<!--#echo var="fieldset_id" -->group_yes" value="1" /><label for="<!--#echo var="fieldset_id" -->group_yes">Group Error Messages by Type</label></td>
+
+</tr>
+<tr>
+        <td><input id="<!--#echo var="fieldset_id" -->-ss" name="ss" type="checkbox" value="1" /><label title="Show Page Source" for="<!--#echo var="fieldset_id" -->-ss">Show Source</label></td>
+        <td colspan="2"><input id="<!--#echo var="fieldset_id" -->-st" name="st" type="checkbox" value="1" /><label for="<!--#echo var="fieldset_id" -->-st">Clean up Markup with HTML-Tidy</label>
+        </td>
+        
+
+
+          </tr>
+          <tr>
+                  <td><input id="<!--#echo var="fieldset_id" -->-outline" name="outline" type="checkbox" value="1" /><label title="Show an Outline of the document" for="<!--#echo var="fieldset_id" -->-outline">Show Outline</label>
+                  </td>
+                  <td><input id="<!--#echo var="fieldset_id" -->-No200" name="No200" type="checkbox" value="1" /><label title="Validate also pages for which the HTTP status code indicates an error" for="<!--#echo var="fieldset_id" -->-No200">Validate error pages</label></td>
+
+                  <td><input id="<!--#echo var="fieldset_id" -->-verbose" name="verbose" type="checkbox" value="1" /><label title="Verbose Output" for="<!--#echo var="fieldset_id" -->-verbose">Verbose Output</label></td>
+        </tr>
+</table>
+

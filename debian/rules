@@ -1,0 +1,54 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(shell dh_listpackages)
+TMP = ${CURDIR}/debian/${PACKAGE}/
+CONFIG_DIR = etc/w3c
+CGIBIN_DIR = usr/lib/cgi-bin/$(PACKAGE)
+SHARED_DIR = usr/share/$(PACKAGE)
+HTML_DIR   = usr/share/$(PACKAGE)/html
+IMAGES_DIR = $(SHARED_DIR)/html/images
+
+%:
+	dh $@ 
+
+override_dh_auto_build:
+	dh_auto_build
+	yui-compressor htdocs/scripts/mootools-1.2.5-core-nc.js > combined.js
+	yui-compressor htdocs/scripts/mootools-1.2.5.1-more.js >> combined.js
+	yui-compressor htdocs/scripts/w3c-validator.js >> combined.js
+
+override_dh_install:
+	dh_install httpd/cgi-bin/check           ${CGIBIN_DIR}
+	dh_install httpd/cgi-bin/sendfeedback.pl ${CGIBIN_DIR}
+	dh_install httpd/conf/*                  ${CONFIG_DIR}
+	dh_install htdocs/config/*               ${CONFIG_DIR}
+	dh_install share/templates/en_US/*       ${SHARED_DIR}/templates/en_US
+	dh_install -Xconfig -Xtest htdocs/*      ${HTML_DIR}
+	dh_install debian/logo.png               ${IMAGES_DIR}
+	dh_install combined.js                   ${HTML_DIR}/scripts
+
+override_dh_installdocs:
+	mkdir -p debian/tmp
+	lynx -dump -nolist htdocs/todo.html | iconv -f latin1 > debian/tmp/TODO
+	lynx -dump -nolist htdocs/whatsnew.html | iconv -f latin1 > debian/tmp/changelog
+	lynx -dump -nolist htdocs/about.html | iconv -f latin1 > debian/tmp/README
+	dh_installdocs
+
+# The validator supports content negotiation with MultiViews.
+# See http://httpd.apache.org/docs/current/content-negotiation.html
+# and httpd/conf/httpd.conf and these compressed files
+# are required as part of that. In order to facilitate 
+# any modifications to the code we have these rules.
+override_dh_compress:
+	dh_compress
+	gzip -c htdocs/navbar.css > ${TMP}/${HTML_DIR}/navbar.css.gz
+	gzip -c htdocs/base.css > ${TMP}/${HTML_DIR}/base.css.gz
+	gzip -c htdocs/tips.css > ${TMP}/${HTML_DIR}/tips.css.gz
+	gzip -c htdocs/print.css > ${TMP}/${HTML_DIR}/print.css.gz
+	gzip -c combined.js > ${TMP}/${HTML_DIR}/scripts/combined.js.gz
+	gzip -c htdocs/docs.css > ${TMP}/${HTML_DIR}/docs.css.gz
+	gzip -c htdocs/handheld.css > ${TMP}/${HTML_DIR}/handheld.css.gz
+	gzip -c htdocs/results.css > ${TMP}/${HTML_DIR}/results.css.gz
+	gzip -c htdocs/style/base.css > ${TMP}/${HTML_DIR}/style/base.css.gz
+	gzip -c htdocs/style/results.css > ${TMP}/${HTML_DIR}/style/results.css.gz
+

@@ -1,0 +1,19 @@
+Subject: Restrict support to http
+ Issues with https have been reported in the past.
+ I would like to support all the protocols but I do not
+ have the time to investigate for now.
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Last-Update: 2010-08-19
+Forwarded: not-needed
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=445265
+--- a/htdocs/config/validator.conf
++++ b/htdocs/config/validator.conf
+@@ -72,7 +72,7 @@
+ # Protocols the validator is allowed to use for retrieving documents.
+ # The default is to allow http and https.
+ <Protocols>
+-  Allow = data,ftp,http,https
++  Allow = http
+ </Protocols>
+ 
+ #

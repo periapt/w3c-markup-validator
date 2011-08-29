@@ -1,0 +1,46 @@
+Subject: Remove warning about test instance
+ The warning is quite alarming and looks like an error.
+ We have already customized the logo to be based upon Debian
+ so noone should think this is the original.
+Author: Nicholas Bamber <nicholas@peript.co.uk>
+Forwarded: not-needed
+Last-Update: 2011-03-14
+--- a/htdocs/intro.html
++++ b/htdocs/intro.html
+@@ -15,7 +15,3 @@
+ <div class="intro" id="don_program"></div>  
+ <script type="text/javascript" src="http://www.w3.org/QA/Tools/don_prog.js"></script>
+ 
+-<p id="test_warning"><img src="images/info_icons/warning.png" alt="Important" /> 
+-  This instance of the validator is either a development version used for testing purposes, or a local copy of the <a href="http://validator.w3.org/source/">W3C Markup Validator software</a>  used for development and testing purposes.<br />
+-  The official validation service supported by the W3C is at <a href="http://validator.w3.org/">validator.w3.org</a>.
+-</p>
+--- a/htdocs/style/base.css
++++ b/htdocs/style/base.css
+@@ -721,26 +721,6 @@
+    }
+ 
+ 
+-/* warning on the home page for test instances */
+-#test_warning {
+-    border-left: 1px solid #ccc;
+-    border-right: 1px solid #ccc;
+-    line-height: 160%;
+-    text-align: center;
+-    margin-top: 2em;
+-	margin-left: 12%;
+-	margin-right: 12%;
+-	padding-left: 1.5em;
+-   padding-right: 1.5em;
+-	color: black;
+-	background-color: white;
+-}
+-
+-#test_warning img {
+-    width: 1.3em;
+-    vertical-align: middle;
+-}
+-
+ /* donation and sponsorship program */
+ 
+ div#don_program { border: 1px solid #55b05a; padding: .5em; line-height: 150%; text-align: center; margin-top: .5em; }

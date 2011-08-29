@@ -1,0 +1,78 @@
+Configuration
+=============
+Almost certainly you will want to edit 
+/etc/w3c/validator.conf to allow one to test webpages on the internal network.
+However this is not enabled by default as a security precaution. Find this
+line and change the "no" to "yes".
+
+Allow Private IPs = no
+
+The install scripts will enable the include and rewrite apache modules, however
+the remove scripts will not disable these modules. This seems this safest
+way of satisfying the code's dependencies on these modules.
+
+Upgrading from older Debian packages
+====================================
+Although old config files will be preserved at the user's discretion
+as per normal Debian policy, they are unlikely to work. The general reason
+is that older packagings in Debian suffered from unnecessary divergence 
+from upstream configuration and several versions have come and gone since 
+then. As such backwards compatibility seems an unlikely goal.
+The three specific issues that might be faced are:
+
+ * In the file /etc/w3c/validator.conf file the Paths/SGML section is rather
+   different.
+ * The path to the main executable is now
+   /usr/lib/cgi-bin/w3c-markup-validator/check.
+ * The home page is now http://localhost/w3c-validator/.
+
+Suggested post-installation tests
+=================================
+1.) Run /usr/lib/cgi-bin/w3c-markup-validator/check
+This should return an HTML page complaining that that type of document is not
+supported. It should not complain of syntax or configuration errors.
+2.) If online run /usr/lib/cgi-bin/w3c-markup-validator/check 'uri=http://www.periapt.co.uk'.
+This should return an HTML page confirming valid HTML.
+3.) Point your browser at http://localhost/w3c-validator/ and run any tests you can think of.
+
+Old note about authentication (Needs follow up)
+=============================
+Note from Adam Sjøgren <asjo@koldfront.dk> in Bug#298772:
+
+[ Note from Nicholas Bamber <nicholas@periapt.co.uk>.
+I have not had time to check this stuff out. 
+However the patch is now out of date. "w3c-markup-validator" is now 
+"w3c-validator/". ]
+
+The Apache-configuration supplied by this package is insufficient for
+validating pages that require http-authorization.
+
+The "check" script attempts to proxy the auth-request (the browser
+pops up a login/password dialogue), but fails (the dialogue keeps
+appearing over and over despite correctly entered login/password).
+
+The problem is that the script expects the environment variable
+HTTP_AUTHORIZATION to contain the contents of the Authorization-header
+(see line 1408 in /usr/lib/cgi-bin/check). It does not by default.
+
+By searching a little I've found an easy way to set this using
+mod_rewrite, as shown in this tiny patch:
+
+
+--- apache.conf.orig    2005-03-09 22:34:20.875157298 +0100
++++ apache.conf 2005-03-09 22:34:47.086559812 +0100
+@@ -2,6 +2,10 @@
+ ScriptAlias /w3c-markup-validator/checklink /usr/lib/cgi-bin/checklink
+ Alias /w3c-markup-validator /usr/share/w3c-markup-validator/html
+ 
++RewriteEngine On
++RewriteCond %{HTTP:Authorization} ^(.*)$ [NC]
++RewriteRule /.* - [E=HTTP_AUTHORIZATION:%1]
++
+ <Location /w3c-markup-validator>
+   Options +Includes +MultiViews
+   AddHandler server-parsed .html
+
+
+
+ -- Frederic Schutz <schutz@mathgen.ch>  Thu, 18 May 2006 19:18:55 +0200

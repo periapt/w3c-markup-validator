@@ -1,0 +1,38 @@
+<!--#set var="title" value="W3C Markup Validation Service: Upload Files"
+--><!--#set var="relroot" value="./"
+--><!--#include virtual="header.html" -->
+
+  <p><a id="skip" name="skip"></a>
+    This form allows you to upload files from your computer and have
+    them validated.
+  </p>
+
+    <div>
+      <h2>Validate Uploaded File</h2>
+      <fieldset><legend>Validate by File Upload</legend>
+      <form method="post" enctype="multipart/form-data" action="check">
+        <table>
+          <tr><th><label for="uploaded_file">File:</label></th><td colspan="2"><input type="file" id="uploaded_file" name="uploaded_file" size="50" /></td></tr>
+<!--#include virtual="detailed-form.html" -->
+          <tr><td />
+            <td><input type="submit" value="Validate this file" /></td>
+	    <td />
+          </tr>
+        </table>
+      </form>
+  <p><strong>Note</strong>: file upload may not work with Internet
+  Explorer on some versions of Windows XP Service Pack 2, see our
+  <a href="http://www.w3.org/QA/2005/01/Validator-IE_WinXP_SP2">information page</a>
+  on the W3C QA Website.</p>
+
+     </fieldset>
+    </div>
+
+   <p>
+    If your document is on the Web, you can validate it with the same advanced options
+    by <a title="Validate files by URL" href="detailed.html">entering its address</a> instead.
+  </p>
+
+  <!--#include virtual="footer.html" -->
+  </body>
+</html>

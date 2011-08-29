@@ -1,0 +1,7 @@
+#
+# robots.txt for validator.w3.org
+#
+
+User-agent: *
+Disallow: /check
+Disallow: /feed/check
