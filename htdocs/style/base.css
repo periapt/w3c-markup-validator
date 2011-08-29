@@ -721,6 +721,26 @@ div.intro p { margin-bottom: .5em;}
    }
 
 
+/* warning on the home page for test instances */
+#test_warning {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    line-height: 160%;
+    text-align: center;
+    margin-top: 2em;
+	margin-left: 12%;
+	margin-right: 12%;
+	padding-left: 1.5em;
+   padding-right: 1.5em;
+	color: black;
+	background-color: white;
+}
+
+#test_warning img {
+    width: 1.3em;
+    vertical-align: middle;
+}
+
 /* donation and sponsorship program */
 
 div#don_program { border: 1px solid #55b05a; padding: .5em; line-height: 150%; text-align: center; margin-top: .5em; }

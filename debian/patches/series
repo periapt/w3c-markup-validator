@@ -7,4 +7,3 @@ mod_perl_disable.patch
 permission_override.patch
 dfsg.patch
 html-template-ver.patch
-debian-changes-1.2+dfsg-2
