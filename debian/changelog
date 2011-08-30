@@ -1,4 +1,4 @@
-w3c-markup-validator (1.2+dfsg-2) UNRELEASED; urgency=low
+w3c-markup-validator (1.2+dfsg-2) unstable; urgency=low
 
   * Corrected bug number regarding mod_perl disablement in patch.
     Thanks to Jorg Sommer for pointing this out.
@@ -7,7 +7,7 @@ w3c-markup-validator (1.2+dfsg-2) UNRELEASED; urgency=low
   * Added lintian override about apparently phoney duplicate file warning
   * Changed repository to github
 
- -- Nicholas Bamber <nicholas@periapt.co.uk>  Thu, 31 Mar 2011 14:35:07 +0100
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Tue, 30 Aug 2011 21:03:25 +0100
 
 w3c-markup-validator (1.2+dfsg-1) unstable; urgency=low
 
