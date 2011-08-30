@@ -7,3 +7,5 @@ w3c-markup-validator: embedded-javascript-library usr/share/w3c-markup-validator
 # These files are required for content negotiation.
 # See #618469
 w3c-markup-validator: duplicated-compressed-file
+# These extended warnings look like a bug in lintian to me.
+w3c-markup-validator: duplicate-files

@@ -7,8 +7,8 @@ Build-Depends: debhelper (>= 7.5.0)
 Build-Depends-Indep: sharutils, perl, lynx, libc-bin, yui-compressor
 Standards-Version: 3.9.2
 Homepage: http://validator.w3.org/about.html
-Vcs-Browser: http://svn.debian.org/wsvn/debian-xml-sgml/packages/w3c-markup-validator
-Vcs-Svn: svn://svn.debian.org/svn/debian-xml-sgml/packages/w3c-markup-validator/trunk
+Vcs-Git: git://github.com:periapt/w3c-markup-validator.git
+Vcs-Browser: http://github.com/periapt/w3c-markup-validator/
 
 Package: w3c-markup-validator
 Architecture: all
