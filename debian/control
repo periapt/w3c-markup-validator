@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Nicholas Bamber <nicholas@periapt.co.uk>
 Uploaders: Jaldhar H. Vyas <jaldhar@debian.org> 
-Build-Depends: debhelper (>= 7.5.0)
+Build-Depends: debhelper (>= 8)
 Build-Depends-Indep: sharutils, perl, lynx, yui-compressor
 Standards-Version: 3.9.2
 Homepage: http://validator.w3.org/about.html

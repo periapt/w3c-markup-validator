@@ -1,6 +1,6 @@
 w3c-markup-validator (1.2+dfsg-3) UNRELEASED; urgency=low
 
-  TODO: lintian, pbuilder
+  TODO: pbuilder, dependency versioning
 
   * Changed Maintainership as the repository is no longer that of
     the Debian XML/SGML group
@@ -10,6 +10,7 @@ w3c-markup-validator (1.2+dfsg-3) UNRELEASED; urgency=low
     was that there seems to be no prospect of seeing the debate
     in http://lists.debian.org/debian-devel/2012/01/msg00148.html
     resolved in a satisfactory manner.
+  * Updated debhelper version and compat level to 8
 
  -- Nicholas Bamber <nicholas@periapt.co.uk>  Thu, 09 Feb 2012 11:53:02 +0000
 
