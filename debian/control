@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Nicholas Bamber <nicholas@periapt.co.uk>
 Uploaders: Jaldhar H. Vyas <jaldhar@debian.org> 
 Build-Depends: debhelper (>= 7.5.0)
-Build-Depends-Indep: sharutils, perl, lynx, libc-bin, yui-compressor
+Build-Depends-Indep: sharutils, perl, lynx, yui-compressor
 Standards-Version: 3.9.2
 Homepage: http://validator.w3.org/about.html
 Vcs-Git: git://github.com:periapt/w3c-markup-validator.git
@@ -18,7 +18,7 @@ Depends: ${perl:Depends}, ${misc:Depends}, apache2, libwww-perl (>= 5.836),
  libconfig-general-perl, w3c-sgml-lib, libencode-hanextra-perl,
  libhtml-encoding-perl, libjson-perl, libxml-libxml-perl (>= 1.70),
  libsgml-parser-opensp-perl
-Recommends: libhtml-tidy-perl
+Recommends: libhtml-tidy-perl, libencode-jis2k-perl
 Suggests: libwebservice-validator-html-w3c-perl, libtest-html-w3c-perl,
  libxml-xpath-perl
 Description: W3C Markup Validator
