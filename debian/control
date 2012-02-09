@@ -12,10 +12,10 @@ Vcs-Browser: http://github.com/periapt/w3c-markup-validator/
 
 Package: w3c-markup-validator
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, apache2, libwww-perl (>= 5.836),
- liburi-perl, libhtml-template-perl, libhtml-parser-perl (>= 3.60),
- libtext-iconv-perl, libset-intspan-perl, libnet-ip-perl, 
- libconfig-general-perl, w3c-sgml-lib, libencode-hanextra-perl,
+Depends: ${perl:Depends}, ${misc:Depends}, apache2 | httpd-cgi,
+ libwww-perl (>= 5.836), liburi-perl, libhtml-template-perl,
+ libhtml-parser-perl (>= 3.60), libtext-iconv-perl, libset-intspan-perl,
+ libnet-ip-perl, libconfig-general-perl, w3c-sgml-lib, libencode-hanextra-perl,
  libhtml-encoding-perl, libjson-perl, libxml-libxml-perl (>= 1.70),
  libsgml-parser-opensp-perl
 Recommends: libhtml-tidy-perl, libencode-jis2k-perl
