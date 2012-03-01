@@ -1,10 +1,10 @@
-Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
-Maintainer: http://validator.w3.org/feedback.html
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: http://validator.w3.org/feedback.html
 Source: http://validator.w3.org/dist/validator.tar.gz
-Name: W3C Markup Validator
+Upstream-Name: W3C Markup Validator
 
 Files: *
-Copyright 1994-2010, W3C(R) (MIT, ERCIM, KEIO)
+Copyright: 1994-2010, W3C(R) (MIT, ERCIM, KEIO)
 License: W3C-Software
 
 Files: htdocs/dev/tests/long-lines.html
@@ -21,13 +21,25 @@ Files: htdocs/scripts/mootools-1.2.5-core-nc.js
 Copyright: 2006-2008, Valerio Proietti <http://mad4milk.net/>
 License: MIT
 
-Files: htdocs/scripts/mootools-1.2.5-core-nc.js (portions)
+Files: htdocs/scripts/mootools-1.2.5-core-nc.js
+Comment: Class implementation inspired by [Base.js]
 Copyright: 2006, Dean Edwards <http://dean.edwards.name/weblog/2006/03/base/>
-License: LGPL
+License: LGPL-2+
 
-Files: htdocs/scripts/mootools-1.2.5-core-nc.js (portions)
-Copyright: 2005-2007, Sam Stephenson
+Files: htdocs/scripts/mootools-1.2.5-core-nc.js
+Comment:  Some functionality inspired by [Prototype.js]
+Copyright: 2005-2007, Sam Stephenson <http://prototypejs.org>
 License: MIT
+
+Files: htdocs/scripts/mootools-1.2.5-core-nc.js
+Comment: Element positioning based on the [qooxdoo] code and smart browser fixes
+Copyright: http://qooxdoo.org/
+License: LGPL-2+
+
+Files: htdocs/scripts/mootools-1.2.5-core-nc.js
+Comment: Viewport dimensions based on [YUI] code
+Copyright: YUI, <http://developer.yahoo.com/yui/>
+License: BSD
 
 Files: debian/validate.pl
 Copyright: 2003-2008, Struan Donald
@@ -140,7 +152,7 @@ License: MIT
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  .
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
@@ -152,3 +164,12 @@ License: MIT
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
+
+License: LGPL-2.1+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
+ .
+ On Debian systems, the complete text of version 2.1 of the GNU Lesser
+ Public License can be found in `/usr/share/common-licenses/LGPL-2.1'.
