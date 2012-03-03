@@ -1,4 +1,4 @@
-w3c-markup-validator (1.2+dfsg-4) UNRELEASED; urgency=low
+w3c-markup-validator (1.2+dfsg-4) unstable; urgency=low
 
   * Updated debian/copyright to latest format and corrected copyright,
     especially after a closer reading of notices in
@@ -8,7 +8,7 @@ w3c-markup-validator (1.2+dfsg-4) UNRELEASED; urgency=low
   * Removed patch restricting protocols to http and
     made an explicit dependency on liblwp-protocol-https (Closes: #445265)
 
- -- Nicholas Bamber <nicholas@periapt.co.uk>  Tue, 28 Feb 2012 12:01:43 +0000
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Sat, 03 Mar 2012 15:57:12 +0000
 
 w3c-markup-validator (1.2+dfsg-3) unstable; urgency=low
 
