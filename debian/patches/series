@@ -2,7 +2,6 @@ validator_conf_debianize.patch
 httpd_conf_debianize.patch
 debian_logo.patch
 remove_test_warning.patch
-restrict_support_to_http.patch
 mod_perl_disable.patch
 permission_override.patch
 dfsg.patch
