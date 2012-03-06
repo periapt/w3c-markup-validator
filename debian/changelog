@@ -1,3 +1,9 @@
+w3c-markup-validator (1.2+dfsg-5) UNRELEASED; urgency=low
+
+  * Corrected typo in VCS URL (Closes: #662735)
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Tue, 06 Mar 2012 08:38:08 +0000
+
 w3c-markup-validator (1.2+dfsg-4) unstable; urgency=low
 
   * Updated debian/copyright to latest format and corrected copyright,
