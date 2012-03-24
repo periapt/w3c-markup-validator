@@ -1,3 +1,9 @@
+w3c-markup-validator (1.2+dfsg-6) UNRELEASED; urgency=low
+
+  * Changed to new location of w3c-sgml-lib files
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Sat, 24 Mar 2012 18:11:46 +0000
+
 w3c-markup-validator (1.2+dfsg-5) unstable; urgency=low
 
   * Corrected typo in VCS URL (Closes: #662735)

@@ -1,7 +1,7 @@
 Subject: Customize main config file
 Forwarded: not-needed
 Author: Nicholas Bamber <nicholas@periapt.co.uk>
-Last-Update: 2011-03-14
+Last-Update: 2012-03-24
 --- a/htdocs/config/validator.conf
 +++ b/htdocs/config/validator.conf
 @@ -19,11 +19,11 @@
@@ -29,7 +29,7 @@ Last-Update: 2011-03-14
      #
      # The SGML Library Path.
 -    Library = $Base/htdocs/sgml-lib
-+    Library = /usr/share/xml/xhtml/schema/dtd
++    Library = /usr/share/xml/w3c-sgml-lib/schema/dtd
    </SGML>
  </Paths>
  
