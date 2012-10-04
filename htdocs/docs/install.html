@@ -46,8 +46,8 @@
     which should work on most systems. To our knowledge, the following platform-specific 
     guides are also available and can be of interest :</p>
     <ul>
-        <li><a href="http://developer.apple.com/internet/opensource/validator.html">Mac OS X and OS X Server</a>
-        at the Apple Developer Connection,</li>
+        <li><a href="http://www.456bereastreet.com/archive/201105/installing_the_w3c_markup_validator_on_mac_os_x/">Mac OS X and OS X Server</a>
+        by Roger Johansson,</li>
         <li><a href="install_win.html">Windows</a>, by David Tibbe</li>
         <li><a href="http://lists.w3.org/Archives/Public/www-validator/2003Dec/0023.html">Linux (Slackware)</a>
         by Nick Talbott</li>
@@ -65,7 +65,7 @@
 	<p>The installation guide assumes that you have a working Web server. We suggest
     the popular Apache server, which is used for the W3C Markup Validation service. 
     The validator may work with other Web servers than the popular Apache, but
-    we can not guarantee that it will. You will also need a working installation 
+    we cannot guarantee that it will. You will also need a working installation 
     of the Perl language (standard on most Web servers).</p>
 
     <h4 id="install-prereq">Step 0: Prerequisites</h4>
@@ -178,11 +178,11 @@ install Bundle::W3C::Validator
         <dd>
           Library to handle URIs and escaping special characters in them.
         </dd>
-        <dt><a href="http://search.cpan.org/dist/XML-LibXML/">XML-LibXML</a> &gt;= 1.70</dt>
+        <dt><a href="http://search.cpan.org/dist/XML-LibXML/">XML-LibXML</a> &gt;= 1.73</dt>
         <dd>
           The Perl binding for <a href="http://xmlsoft.org/">libxml2</a>, used
           to check the syntax of XML-based document types.  In addition to the
-          version requirement, XML::LibXML needs to be built with support for
+          version requirement, XML-LibXML needs to be built with support for
           libxml2 structured errors, i.e. libxml2 &gt;= 2.6.21.
         </dd>
       </dl>

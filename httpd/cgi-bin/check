@@ -3,7 +3,7 @@
 # W3C Markup Validation Service
 # A CGI script to retrieve and validate a markup file
 #
-# Copyright 1995-2010 World Wide Web Consortium, (Massachusetts
+# Copyright 1995-2012 World Wide Web Consortium, (Massachusetts
 # Institute of Technology, European Research Consortium for Informatics
 # and Mathematics, Keio University). All Rights Reserved.
 #
@@ -53,7 +53,9 @@ use File::Spec::Functions qw(catfile rel2abs tmpdir);
 use HTML::Encoding 0.52 qw();
 use HTML::HeadParser 3.60 qw();    # Needed for HTML5 meta charset workaround
 use HTML::Parser 3.24 qw();        # Need 3.24 for $p->parse($code_ref)
-use HTML::Template 2.6 qw();       # Need 2.6 for path param, other things.
+use HTML::Template qw();           # Need 2.6 for path param, other things.
+                                   # Specifying 2.6 would break with 2.10,
+                                   # rt.cpan.org#70190
 use HTTP::Headers::Util qw();
 use HTTP::Message 1.52 qw();       # Need 1.52 for decoded_content()
 use HTTP::Request qw();
@@ -82,7 +84,7 @@ use constant T_ERROR => 8;    # 0000 1000
 #
 # Define global variables.
 use vars qw($DEBUG $CFG %RSRC $VERSION);
-$VERSION = '1.2';
+$VERSION = '1.3';
 
 use constant IS_MODPERL2 =>
     (exists($ENV{MOD_PERL_API_VERSION}) && $ENV{MOD_PERL_API_VERSION} >= 2);
@@ -165,17 +167,17 @@ EOF
 
     {    # Make types config indexed by FPI.
         my $types = {};
-        $types->{$CFG->{Types}->{$_}->{PubID}} = $CFG->{Types}->{$_}
-            for keys(%{$CFG->{Types}});
+        while (my ($key, $value) = each %{$CFG->{Types}}) {
+            $types->{$CFG->{Types}->{$key}->{PubID}} = $value;
+        }
         $CFG->{Types} = $types;
     }
 
     #
     # Change strings to internal constants in MIME type mapping.
-    for (keys %{$CFG->{MIME}}) {
-        $CFG->{MIME}->{$_} = 'TBD'
-            unless $CFG->{MIME}->{$_} eq 'SGML' or
-                $CFG->{MIME}->{$_} eq 'XML';
+    while (my ($key, $value) = each %{$CFG->{MIME}}) {
+        $CFG->{MIME}->{$key} = 'TBD'
+            unless ($value eq 'SGML' || $value eq 'XML');
     }
 
     #
@@ -217,10 +219,13 @@ EOF
     # SGML open catalogs but they don't seem to work (again as of 1.70 and
     # 2.7.7); if we use xml.soc here, no entities seem to end up being resolved
     # from it - so we use a (redundant) XML catalog which works.
+    # Note that setting XML_CATALOG_FILES here does not seem to work with
+    # mod_perl (it doesn't end up being used by XML::LibXML), therefore we do
+    # it in the mod_perl/startup.pl startup file for it too.
     local $ENV{XML_CATALOG_FILES} =
         catfile($CFG->{Paths}->{SGML}->{Library}, 'catalog.xml');
     require XML::LibXML;
-    XML::LibXML->VERSION(1.70);    # Need 1.70 for (working) structured errors
+    XML::LibXML->VERSION(1.73);    # Need 1.73 for rt.cpan.org #66642
 
 }    # end of BEGIN block.
 
@@ -279,7 +284,7 @@ $File->{Warnings}   = [];    # Warnings...
 $File->{Namespaces} = [];    # Other (non-root) Namespaces.
 $File->{Parsers}    = [];    # Parsers used {name, link, type, options}
 
-# By default, doctype-less documents can not be valid
+# By default, doctype-less documents cannot be valid
 $File->{"DOCTYPEless OK"}             = FALSE;
 $File->{"Default DOCTYPE"}->{"HTML"}  = 'HTML 4.01 Transitional';
 $File->{"Default DOCTYPE"}->{"XHTML"} = 'XHTML 1.0 Transitional';
@@ -444,7 +449,7 @@ $File = find_encodings($File);
 if ($File->{Charset}->{HTTP}) {    # HTTP, if given, is authoritative.
     $File->{Charset}->{Use} = $File->{Charset}->{HTTP};
 }
-elsif ($File->{ContentType} =~ m(^text/([-.a-zA-Z0-9]\+)?xml$)) {
+elsif ($File->{ContentType} =~ m(^text/(?:[-.a-zA-Z0-9]\+)?xml$)) {
 
     # Act as if $http_charset was 'us-ascii'. (MIME rules)
     $File->{Charset}->{Use} = 'us-ascii';
@@ -467,7 +472,7 @@ elsif ($File->{BOM} &&
 {
     $File->{Charset}->{Use} = 'utf-16';
 }
-elsif ($File->{ContentType} =~ m(^application/([-.a-zA-Z0-9]+\+)?xml$)) {
+elsif ($File->{ContentType} =~ m(^application/(?:[-.a-zA-Z0-9]+\+)?xml$)) {
     $File->{Charset}->{Use} = "utf-8";
 }
 elsif (&is_xml($File) and not $File->{ContentType} =~ m(^text/)) {
@@ -584,7 +589,7 @@ if ($File->{Charset}->{Use} eq 'utf-8' &&
 #
 # Override DOCTYPE if user asked for it.
 if ($File->{Opt}->{DOCTYPE}) {
-    if ($File->{Opt}->{DOCTYPE} !~ /(Inline|detect)/i) {
+    if ($File->{Opt}->{DOCTYPE} !~ /(?:Inline|detect)/i) {
         $File = &override_doctype($File);
     }
     else {
@@ -726,7 +731,7 @@ if ($File->{Namespace}) {
             );
         }
     }
-    else {
+    elsif ($File->{DOCTYPE} ne 'HTML5') {
         &add_warning(
             'W11',
             {   W11_ns      => $File->{Namespace},
@@ -793,7 +798,6 @@ else {
 &prep_template($File, $template);
 &fin_template($File, $template);
 
-$template->param(file_warnings => $File->{Warnings});
 $template->param(tidy_output   => $File->{Tidy});
 $template->param(file_source   => &source($File))
     if ($template->param('opt_show_source') or
@@ -805,10 +809,7 @@ if ($File->{Opt}->{Output} eq 'json') {
     # No JSON escaping in HTML::Template (and "JS" is not the right thing here)
     my $json = JSON->new();
     $json->allow_nonref(TRUE);
-    for my $msgs ($template->param("file_errors"),
-        $template->param("file_warnings"))
-    {
-        next unless $msgs;
+    if (my $msgs = $template->param("file_errors")) {
         for my $msg (@$msgs) {
             for my $key (qw(msg expl)) {
                 $msg->{$key} = $json->encode($msg->{$key}) if $msg->{$key};
@@ -1047,10 +1048,13 @@ sub html5_validate (\$)
     my $req = HTTP::Request->new(POST => $url);
     my $ct = &is_xml($File) ? "application/xhtml+xml" : "text/html";
 
-    if ($File->{Opt}->{DOCTYPE} || $File->{Charset}->{Override}) {
+    if ($File->{Opt}->{DOCTYPE} || $File->{Charset}->{Override} ||
+        $File->{'Direct Input'})
+    {
 
         # Doctype or charset overridden, need to use $File->{Content} in UTF-8
-        # because $File->{Bytes} is not affected by the overrides.
+        # because $File->{Bytes} is not affected by the  overrides.  Note that
+        # direct input is always considered an override here.
 
         &override_charset($File, "UTF-8");
 
@@ -1058,7 +1062,6 @@ sub html5_validate (\$)
         my @ct = ($ct => undef, charset => "UTF-8");
         $ct = HTTP::Headers::Util::join_header_words(@ct);
 
-        $req->content_type($ct);
         $req->content(Encode::encode_utf8(join("\n", @{$File->{Content}})));
     }
     else {
@@ -1068,19 +1071,14 @@ sub html5_validate (\$)
         # is the same later when displaying error contexts (regardless of EOL
         # chars used in the document).
 
-        if ($File->{'Direct Input'}) {
-            $ct .= "; charset=UTF-8";
-        }
-        else {
-            my @ct = ($File->{ContentType} => undef);
-            push(@ct, charset => $File->{Charset}->{HTTP})
-                if $File->{Charset}->{HTTP};
-            $ct = HTTP::Headers::Util::join_header_words(@ct);
-        }
+        my @ct = ($File->{ContentType} => undef);
+        push(@ct, charset => $File->{Charset}->{HTTP})
+            if $File->{Charset}->{HTTP};
+        $ct = HTTP::Headers::Util::join_header_words(@ct);
 
-        $req->content_type($ct);
         $req->content_ref(\$File->{Bytes});
     }
+    $req->content_type($ct);
 
     $req->content_language($File->{ContentLang}) if $File->{ContentLang};
 
@@ -1486,12 +1484,6 @@ sub prep_template ($$)
     $T->param(opt_group_errors => $File->{Opt}->{'Group Errors'});
     $T->param(opt_no200        => $File->{Opt}->{No200});
 
-    #
-    # Tip of the Day...
-    my $tip = &get_tip();
-    $T->param(tip_uri  => $tip->[0]);
-    $T->param(tip_slug => $tip->[1]);
-
     # Root Element
     $T->param(root_element => $File->{Root});
 
@@ -1676,6 +1668,7 @@ sub report_valid
             $T->param(badge_rdfa          => $cfg->{Badge}->{RDFa});
             $T->param(badge_h             => $cfg->{Badge}->{Height});
             $T->param(badge_w             => $cfg->{Badge}->{Width});
+            $T->param(badge_onclick       => $cfg->{Badge}->{OnClick});
             $T->param(badge_tagc => $cfg->{'Parse Mode'} eq 'XML' ? ' /' : '');
         }
     }
@@ -1721,13 +1714,13 @@ sub authenticate
     my $realm = $resource;
     $realm =~ s([^\w\d.-]*){}g;
 
-    for my $scheme (keys(%$authHeader)) {
-        my $origrealm = $authHeader->{$scheme}->{realm};
-        if (not defined $origrealm or lc($scheme) !~ /^(?:basic|digest)$/) {
+    while (my ($scheme, $header) = each %$authHeader) {
+        my $origrealm = $header->{realm};
+        if (not defined $origrealm or $scheme !~ /^(?:basic|digest)$/i) {
             delete($authHeader->{$scheme});
             next;
         }
-        $authHeader->{$scheme}->{realm} = "$realm-$origrealm";
+        $header->{realm} = "$realm-$origrealm";
     }
 
     my $headers = HTTP::Headers->new(Connection => 'close');
@@ -1878,7 +1871,7 @@ sub handle_uri
     $File->{ContentLang}     = $res->content_language;
     $File->{ContentLoc}      = $res->header('Content-Location');
     $File->{TransferEnc}     = $res->header('Client-Transfer-Encoding');
-    $File->{Charset}->{HTTP} = lc $charset;
+    $File->{Charset}->{HTTP} = lc $charset if defined $charset;
     $File->{Modified}        = $res->header('Last-Modified');
     $File->{Server}          = scalar $res->server;
 
@@ -1921,7 +1914,7 @@ sub handle_file
     $File->{Bytes}           = $file;
     $File->{Mode}            = $mode;
     $File->{ContentType}     = $ct;
-    $File->{Charset}->{HTTP} = lc $charset;
+    $File->{Charset}->{HTTP} = lc $charset if defined $charset;
     $File->{Modified}        = $q->http('Last-Modified');
     $File->{Server}          = $q->http('User-Agent');   # Fake a "server". :-)
     $File->{Size}           = $q->http('Content-Length');
@@ -1990,7 +1983,7 @@ sub parse_content_type
 
     $charset = HTML::Encoding::encoding_from_content_type($Content_Type);
 
-    if ($mode =~ m(/)) {   # a "/" means it's unknown or we'd have a mode here.
+    if (index($mode, '/') != -1) {   # a "/" means it's unknown or we'd have a mode here.
         if ($ct eq 'text/css' and defined $url) {
             print redirect
                 'http://jigsaw.w3.org/css-validator/validator?uri=' .
@@ -2200,7 +2193,6 @@ sub override_doctype
     my $org_dtd      = '';
     my $HTML         = '';
     my $seen_doctype = FALSE;
-    my $seen_root    = FALSE;
 
     my $declaration = sub {
         my ($tag, $text) = @_;
@@ -2236,29 +2228,18 @@ sub override_doctype
     };
 
     my $start_element = sub {
-        if ($seen_root) {
-            $HTML .= $_[0];    # Stash it as is... moving on
-        }
-        else {
-            $seen_root = TRUE;
-            if ($seen_doctype) {
-
-                # doctype addition already done, we move on
-                $HTML .= $_[0];
-            }
-            else {
-
-                # no original doctype present, hence none replaced already
-                # => we sneak the chosen doctype before the root elt
-                $HTML .= "$dtd$_[0]";
-            }
-        }
+        my $p = shift;
+        # Sneak chosen doctype before the root elt if none replaced thus far.
+        $HTML .= $dtd unless $seen_doctype;
+        $HTML .= shift;
+        # We're done with this handler.
+        $p->handler(start => undef);
     };
 
     HTML::Parser->new(
         default_h => [sub { $HTML .= shift }, 'text'],
         declaration_h => [$declaration,   'tag,text'],
-        start_h       => [$start_element, 'text']
+        start_h       => [$start_element, 'self,text']
     )->parse(join "\n", @{$File->{Content}})->eof();
 
     $File->{Content} = [split /\n/, $HTML];
@@ -2306,13 +2287,22 @@ sub override_charset ($$)
 
     my $content = join("\n", @{$File->{Content}});
 
+    # Flatten newlines (so that we don't end up changing line numbers while
+    # overriding) and comment-escape a string.
+    sub escape_original ($)
+    {
+        my $str = shift;
+        $str =~ tr/\r\n/ /;
+        return &escape_comment($str);
+    }
+
     # <?xml encoding="charset"?>
     $content =~ s/(
               (^<\?xml\b[^>]*?${ws}encoding${ws}*=${ws}*(["']))
               (${cs})
               (\3.*?\?>)
           )/lc($4) eq lc($charset) ?
-              "$1" : "$2$charset$5<!-- " . &escape_comment($1) ." -->"/esx;
+              "$1" : "$2$charset$5<!-- " . &escape_original($1) . " -->"/esx;
 
     # <meta charset="charset">
     $content =~ s/(
@@ -2320,7 +2310,7 @@ sub override_charset ($$)
               (${cs})
               (.*?>)
           )/lc($3) eq lc($charset) ?
-              "$1" : "$2$charset$4<!-- " . &escape_comment($1) . " -->"/esix;
+              "$1" : "$2$charset$4<!-- " . &escape_original($1) . " -->"/esix;
 
     # <meta http-equiv="content-type" content="some/type; charset=charset">
     $content =~ s/(
@@ -2330,7 +2320,7 @@ sub override_charset ($$)
               (${cs})
               (.*?>)
           )/lc($3) eq lc($charset) ?
-              "$1" : "$2$charset$4<!-- " . &escape_comment($1) . " -->"/esix;
+              "$1" : "$2$charset$4<!-- " . &escape_original($1) . " -->"/esix;
 
     # <meta content="some/type; charset=charset" http-equiv="content-type">
     $content =~ s/(
@@ -2339,7 +2329,7 @@ sub override_charset ($$)
               (${cs})
               ([^>]*?${ws}http-equiv${ws}*=${ws}*["']?${ws}*content-type\b.*?>)
           )/lc($3) eq lc($charset) ?
-              "$1" : "$2$charset$4<!-- " . &escape_comment($1) . " -->"/esix;
+              "$1" : "$2$charset$4<!-- " . &escape_original($1) . " -->"/esix;
 
     $File->{Content} = [split /\n/, $content];
 }
@@ -2354,7 +2344,7 @@ sub set_error_uri ($$)
     # passing docs to parsers as strings, but S::P::O (at least as of 0.994)
     # seems to give us "3" as the FileName in those cases so we try to filter
     # out everything that doesn't look like a useful URI.
-    if ($uri && $uri =~ m|/|) {
+    if ($uri && index($uri, '/') != -1) {
 
         # Mask local file paths
         my $euri = URI->new($uri);
@@ -2517,12 +2507,8 @@ sub report_errors ($)
             }
         }
     }
-    if ($File->{Opt}->{'Group Errors'}) {
-        $Errors = [];
-        for my $err_num (keys %Errors_bytype) {
-            push @{$Errors}, $Errors_bytype{$err_num};
-        }
-    }
+
+    @$Errors = values(%Errors_bytype) if $File->{Opt}->{'Group Errors'};
 
     # we are not sorting errors by line, as it would break the position
     # of auxiliary messages such as "start tag was here". We'll have to live
@@ -2600,19 +2586,16 @@ sub match_DTD_FPI_SI
         }
     }
     else {    # FPI not known, checking if the SI is
-        foreach my $proper_FPI (keys %{$CFG->{Types}}) {
-            if ($CFG->{Types}->{$proper_FPI}->{SysID}) {
-                if ($CFG->{Types}->{$proper_FPI}->{SysID} eq $SI) {
-                    &add_warning(
-                        'W26',
-                        {   W26_dtd_pub => $FPI,
-                            W26_dtd_pub_display =>
-                                $CFG->{Types}->{$proper_FPI}->{Display},
-                            W26_dtd_sys           => $SI,
-                            W26_dtd_pub_recommend => $proper_FPI
-                        }
-                    );
-                }
+        while (my ($proper_FPI, $value) = each %{$CFG->{Types}}) {
+            if ($value->{SysID} && $value->{SysID} eq $SI) {
+                &add_warning(
+                    'W26',
+                    {   W26_dtd_pub           => $FPI,
+                        W26_dtd_pub_display   => $value->{Display},
+                        W26_dtd_sys           => $SI,
+                        W26_dtd_pub_recommend => $proper_FPI
+                    }
+                );
             }
         }
     }
@@ -2778,14 +2761,8 @@ sub prepCGI
         my @values = map { Encode::decode_utf8($_) } $q->param($param);
         $q->param($param, @values);
 
-        # Original checking had a specific Accept: header sent.
-        next if $param eq 'accept';
-
-        # Ditto Accept-Language:.
-        next if $param eq 'accept-language';
-
-        # Ditto Accept-Charset:.
-        next if $param eq 'accept-charset';
+        # Skip parameters that should not be treated as booleans.
+        next if $param =~ /^(?:accept(?:-(?:language|charset))?|ur[il])$/;
 
         # Keep false-but-set params.
         next if $q->param($param) eq '0';
@@ -2793,37 +2770,6 @@ sub prepCGI
         # Parameters that are given to us without specifying a value get set
         # to a true value.
         $q->param($param, TRUE) unless $q->param($param);
-    }
-
-    my $path_info = $q->path_info();
-
-    # IIS reportedly does not provide the $path_info we expect - hack around it.
-    $path_info =~ s|(.*)/check\.pl(.*)$|$2|
-        if ($ENV{SERVER_SOFTWARE} and
-        $ENV{SERVER_SOFTWARE} =~ /Microsoft-IIS/);
-
-    # apparently, with mod_perl2, $path_info is empty even if it should be
-    # filled. working around that
-    if (!$path_info && $File->{Env}->{'Self URI'} =~ /check\/referr?er$/) {
-        $path_info = '/referer';
-        $File->{Env}->{'Self URI'} =~ s/\/referr?er$//;
-    }
-
-    # Futz the URL so "/referer" works.
-    if ($path_info) {
-        if ($path_info =~ m|^/referr?er$|) {
-            if ($q->referer) {
-                $q->param('uri', $q->referer);
-                print redirect &self_url_q($q, $File);
-            }
-            else {
-                print redirect $File->{Env}->{'Self URI'} . '?uri=referer';
-            }
-        }
-        else {
-            print redirect &self_url_q($q, $File);
-        }
-        exit;
     }
 
     $File->{Env}->{'Home Page'} =
@@ -2846,14 +2792,12 @@ sub prepCGI
                 if ($q->http('Accept-Language'));
             $q->param('accept-charset', $q->http('Accept-Charset'))
                 if ($q->http('Accept-Charset'));
-            print redirect &self_url_q($q, $File);
+            print redirect(-uri => &self_url_q($q, $File), -vary => 'Referer');
             exit;
         }
         else {
 
-            # Redirected from /check/referer to /check?uri=referer because
-            # the browser didn't send a Referer header, or the request was
-            # for /check?uri=referer but no Referer header was found.
+            # No Referer header was found.
             $File->{'Error Flagged'} = TRUE;
             &get_error_template($File)->param(fatal_referer_error => TRUE);
         }
@@ -2939,7 +2883,9 @@ sub set_parse_mode
     );
 
     my $parseModeFromNamespace = 'TBD';
-    if ($File->{Namespace}) { $parseModeFromNamespace = 'XML' }
+    # http://www.w3.org/Bugs/Public/show_bug.cgi?id=9967
+    $parseModeFromNamespace = 'XML'
+        if ($File->{Namespace} && $parseModeFromDoctype ne 'HTML5');
 
     if (($parseModeFromMimeType eq 'TBD') and
         ($parseModeFromXMLDecl   eq 'TBD') and
@@ -3051,8 +2997,8 @@ sub set_parse_mode
         if ($File->{Mode} eq "") {
             $File->{Mode} = "DTD+" . $parseModeFromXMLDecl;
         }
-        elsif ($File->{Mode} =~ /\+/) {
-            $File->{Mode} =~ s/\+.*/\+$parseModeFromXMLDecl/;
+        elsif ((my $ix = index($File->{Mode}, '+')) != -1) {
+            substr($File->{Mode}, $ix + 1) = $parseModeFromXMLDecl;
         }
         else {
             $File->{Mode} = $File->{Mode} . "+" . $parseModeFromXMLDecl;
@@ -3067,8 +3013,8 @@ sub set_parse_mode
     if ($File->{Mode} eq "") {
         $File->{Mode} = "DTD+" . $parseModeFromNamespace;
     }
-    elsif ($File->{Mode} =~ /\+/) {
-        $File->{Mode} =~ s/\+.*/\+$parseModeFromNamespace/;
+    elsif ((my $ix = index($File->{Mode}, '+')) != -1) {
+        substr($File->{Mode}, $ix + 1) = $parseModeFromNamespace;
     }
     else {
         $File->{Mode} = $File->{Mode} . "+" . $parseModeFromNamespace;
@@ -3078,7 +3024,10 @@ sub set_parse_mode
 
 #
 # Utility sub to tell if mode "is" XML.
-sub is_xml { shift->{Mode} =~ /XML/ }
+sub is_xml
+{
+    index(shift->{Mode}, 'XML') != -1;
+}
 
 #
 # Check charset conflicts and add any warnings necessary.
@@ -3162,7 +3111,7 @@ sub transcode
     my $cs = $exact_charset;
 
     if ($CFG->{Charsets}->{$cs}) {
-        if ($CFG->{Charsets}->{$cs} =~ /ERR /) {
+        if (index($CFG->{Charsets}->{$cs}, 'ERR ') != -1) {
 
             # The encoding is not supported due to policy
 
@@ -3176,7 +3125,7 @@ sub transcode
                     'This encoding is not supported by the validator.');
             return $File;
         }
-        elsif ($CFG->{Charsets}->{$cs} =~ /X /) {
+        elsif (index($CFG->{Charsets}->{$cs}, 'X ') != -1) {
 
             # possibly problematic, we recommend another alias
             my $recommended_charset = $CFG->{Charsets}->{$cs};
@@ -3225,7 +3174,7 @@ sub transcode
         # Transcoding failed - do it again line by line to find out exactly
         # where
         my $line_num = 0;
-        while ($input =~ /(.*?)(?:\r\n|\n|\r)/g) {
+        while ($input =~ /(.*?)(?:\r\n|\n|\r|\z)/g) {
             $line_num++;
             eval { $enc->decode($1, Encode::FB_CROAK); };
             if ($@) {
@@ -3369,28 +3318,16 @@ sub self_url_q
     }
 
     # Others
-    if ($q->param('doctype') and
-        not $q->param('doctype') =~ /(Inline|detect)/i)
+    if ($q->param('doctype') and $q->param('doctype') !~ /(?:Inline|detect)/i)
     {
         $thispage .= 'doctype=' . uri_escape($q->param('doctype')) . ';';
     }
-    if ($q->param('charset') and not $q->param('charset') =~ /detect/i) {
+    if ($q->param('charset') and $q->param('charset') !~ /detect/i) {
         $thispage .= 'charset=' . uri_escape($q->param('charset')) . ';';
     }
 
     $thispage =~ s/[\?;]$//;
     return $thispage;
-}
-
-#
-# Return random tip and its URL.
-sub get_tip
-{
-    my @tipAddrs = keys %{$CFG->{Tips}};
-    my $tipAddr  = $tipAddrs[rand scalar @tipAddrs];
-    my $tipSlug  = $CFG->{Tips}->{$tipAddr};
-
-    return [$tipAddr, $tipSlug];
 }
 
 #
@@ -3591,7 +3528,7 @@ sub error
         # will be #344
     }
 
-    if (($err->{num} eq '113') and ($err->{msg} =~ /xml:space/)) {
+    if (($err->{num} eq '113') and index($err->{msg}, 'xml:space') != -1) {
 
         # FIXME
         # this is a problem with some of the "flattened" W3C DTDs, filtering
@@ -3634,7 +3571,7 @@ sub error
     #  }
 
     # No or unknown FPI and a relative SI.
-    if ($err->{msg} =~ m(cannot (open|find))) {
+    if ($err->{msg} =~ m(cannot (?:open|find))) {
         $File->{'Error Flagged'} = TRUE;
         my $tmpl = &W3C::Validator::MarkupValidator::get_error_template($File);
         $tmpl->param(fatal_parse_extid_error => TRUE);
@@ -3642,7 +3579,7 @@ sub error
     }
 
     # No DOCTYPE found! We are falling back to vanilla DTD
-    if ($err->{msg} =~ m(prolog can\'t be omitted)) {
+    if (index($err->{msg}, "prolog can't be omitted") != -1) {
         if (lc($File->{Root}) eq 'html') {
             my $dtd = $File->{"Default DOCTYPE"}->{$is_xml ? "XHTML" : "HTML"};
             W3C::Validator::MarkupValidator::add_warning('W09',
