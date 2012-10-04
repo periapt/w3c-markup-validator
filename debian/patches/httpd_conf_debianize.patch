@@ -1,10 +1,10 @@
 Subject: Cutomization for httpd.conf fragment
 Author: Nicholas Bamber <nicholas@periapt.co.uk>
 Forwarded: not-needed
-Last-Update: 2010-08-18
+Last-Update: 2012-10-04
 --- a/httpd/conf/httpd.conf
 +++ b/httpd/conf/httpd.conf
-@@ -1,20 +1,18 @@
+@@ -1,12 +1,10 @@
  #                                                                -*- apache -*-
 -# Example httpd.conf snippet for W3C Markup Validation Service
 +# Debianized httpd.conf snippet for W3C Markup Validation Service
@@ -20,17 +20,19 @@ Last-Update: 2010-08-18
  #
  # To run the validator without mod_perl 2.x even if it is loaded, comment
  # out the "IfDefine MODPERL2" sections below.
+@@ -31,9 +29,9 @@
  
- # First, tell httpd that check and sendfeedback.pl are CGI scripts.
+ # Tell httpd that check and sendfeedback.pl are CGI scripts.
  
--AliasMatch ^/+w3c-validator/+check(/+referer)?$   /usr/local/validator/cgi-bin/check
--AliasMatch ^/+w3c-validator/+feedback(\.html)?$ /usr/local/validator/cgi-bin/sendfeedback.pl
-+AliasMatch ^/+w3c-validator/+check(/+referer)?$   /usr/lib/cgi-bin/w3c-markup-validator/check
-+AliasMatch ^/+w3c-validator/+feedback(\.html)?$ /usr/lib/cgi-bin/w3c-markup-validator/sendfeedback.pl
+-Alias /w3c-validator/check /usr/local/validator/cgi-bin/check
++Alias /w3c-validator/check /usr/lib/cgi-bin/w3c-markup-validator/check
+ AliasMatch ^/+w3c-validator/+feedback(\.html)?$ \
+-           /usr/local/validator/cgi-bin/sendfeedback.pl
++           /usr/lib/cgi-bin/w3c-markup-validator/sendfeedback.pl
  
  <IfDefine MODPERL2>
- # Note: this affects the whole server, not just the validator.
-@@ -40,8 +38,8 @@
+ # Note: this block affects the whole server, not just the validator.
+@@ -60,8 +58,8 @@
  
  # This is the directory where you have the validator's *.html, *.css etc files.
  
