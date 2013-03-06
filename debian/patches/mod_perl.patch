@@ -1,0 +1,26 @@
+Subject: Customize mod_perl related stuff
+Forwarded: not-needed
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Last-Update: 2013-03-06
+--- a/httpd/conf/httpd.conf
++++ b/httpd/conf/httpd.conf
+@@ -36,7 +36,7 @@
+ <IfDefine MODPERL2>
+ # Note: this block affects the whole server, not just the validator.
+ PerlSwitches -T
+-PerlPostConfigRequire /usr/local/validator/httpd/mod_perl/startup.pl
++PerlPostConfigRequire /usr/share/w3c-markup-validator/mod_perl/startup.pl
+ </IfDefine>
+ 
+ <LocationMatch "^/+w3c-validator/+(check|feedback(\.html)?)$">
+--- a/httpd/mod_perl/startup.pl
++++ b/httpd/mod_perl/startup.pl
+@@ -8,7 +8,6 @@
+ # /usr/local/validator, be sure to modify this file so that the path to
+ # catalog.xml below is correct for validator's sgml-lib/catalog.xml
+ 
+-my $home = $ENV{W3C_VALIDATOR_HOME} || "/usr/local/validator";
+-$ENV{XML_CATALOG_FILES} = "$home/htdocs/sgml-lib/catalog.xml";
++$ENV{XML_CATALOG_FILES} = "/usr/share/xml/w3c-sgml-lib/schema/dtd/catalog.xml";
+ 
+ 1;

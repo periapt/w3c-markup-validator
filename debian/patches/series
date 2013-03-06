@@ -1,8 +1,8 @@
 validator_conf_debianize.patch
 httpd_conf_debianize.patch
-debian_logo.patch
+mod_perl.patch
 remove_test_warning.patch
-mod_perl_disable.patch
 permission_override.patch
 dfsg.patch
-html-template-ver.patch
+makefile.patch
+debian_logo.patch
