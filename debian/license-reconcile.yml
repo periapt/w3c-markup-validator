@@ -1,0 +1,9 @@
+Rules:
+ rules:
+  -
+   Glob: misc/*
+   Contains: Licensed under the W3C Software License
+   CopyrightExtract: Copyright\s+\(c\)\s+(\Y+[\w]+)\.\s+Licensed\s+under\s+the\s+W3C\s+Software\s+License
+   License: W3C-Software
+ChangeLog:
+ license: Artistic
