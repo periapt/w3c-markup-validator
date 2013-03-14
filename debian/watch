@@ -1,3 +1,5 @@
 version=3
 opts=dversionmangle=s/\+dfsg// \
-  http://validator.w3.org/dist/validator-(\d+)_(\d+)\.tar\.gz
+  http://validator.w3.org/dist/validator-(\d+)_(\d+)\.tar\.gz \
+  debian sh debian/repack.sh
+

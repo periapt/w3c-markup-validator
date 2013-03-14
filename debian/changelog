@@ -8,6 +8,7 @@ w3c-markup-validator (1.3+dfsg-1) UNRELEASED; urgency=low
   * Upstream Makefile now generates some resources but had to be debianized
   * Raised standards version to 3.9.4
   * Added config file for license-reconcile and updated debian/copyright
+  * Updated debian/watch to repack upstream tarball
 
  -- Nicholas Bamber <nicholas@periapt.co.uk>  Thu, 04 Oct 2012 12:16:23 +0100
 

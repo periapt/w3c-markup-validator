@@ -10,3 +10,4 @@ rm -f htdocs/handheld.css.gz
 rm -f htdocs/results.css.gz
 rm -f htdocs/style/base.css.gz
 rm -f htdocs/style/results.css.gz
+rm -f htdocs/docs/errors.html

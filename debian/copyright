@@ -2,6 +2,9 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: http://validator.w3.org/feedback.html
 Source: http://validator.w3.org/dist/validator.tar.gz
 Upstream-Name: W3C Markup Validator
+Comment: Removed the directory htdocs/images/valid_icons/ as the
+ W3C Document license is not DFSG compatible.
+ Also removed htdocs/docs/errors.html and *.gz as they are regenerated.
 
 Files: *
 Copyright: 1994-2010, W3C(R) (MIT, ERCIM, KEIO)
