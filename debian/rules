@@ -21,9 +21,8 @@ override_dh_install:
 	dh_install httpd/mod_perl/*              ${SHARED_DIR}/mod_perl
 	dh_install htdocs/config/*               ${CONFIG_DIR}
 	dh_install share/templates/en_US/*       ${SHARED_DIR}/templates/en_US
-	dh_install -Xconfig -Xtest -Xerrors htdocs/*      ${HTML_DIR}
+	dh_install -Xconfig -Xtest htdocs/*      ${HTML_DIR}
 	dh_install debian/logo.png               ${IMAGES_DIR}
-	dh_install debian/errors.html        ${HTML_DIR}
 
 override_dh_installdocs:
 	mkdir -p debian/tmp
